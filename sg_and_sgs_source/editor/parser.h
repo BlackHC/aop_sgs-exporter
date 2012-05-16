@@ -80,6 +80,7 @@ class Parser
 {
 	boost::scoped_ptr<ParserData> data;
 
+	Parser( const Parser & );
 public:
 	// the new error whine to get rid of the f*ed up "silently ignore errors" feature. --jpk
 	Parser(bool logUnreferenced = true, bool logNonExisting = true);

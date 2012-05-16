@@ -62,11 +62,16 @@ namespace {
 	{
 		if(a.textureA < b.textureA)
 			return true;
+		if(a.textureA > b.textureA)
+			return false;
+		
 		if(a.textureB < b.textureB)
 			return true;
+		if(a.textureB > b.textureB)
+			return false;
+
 		if(a.subMask < b.subMask)
 			return true;
-
 		return false;
 	}
 

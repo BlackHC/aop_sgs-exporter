@@ -326,7 +326,8 @@ void GroupList::addObjectGroup(const string &group, const string &subgroup, cons
 	file += "_";
 	file += objectGroup.name;
 	file += ".fbt";
-	ofstream(file.c_str()) << parser;
+	ofstream tmp(file.c_str());
+	tmp << parser;
 }
 
 } // editor

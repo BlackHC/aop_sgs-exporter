@@ -14,7 +14,6 @@
 
 // minizip
 #include "unzip.h"
-#pragma comment(lib, "minizip.lib")
 #pragma comment(lib, "zlib.lib")
 
 #include <map>
