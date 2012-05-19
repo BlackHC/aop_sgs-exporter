@@ -1,0 +1,503 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{84e11eb6-e329-43cd-a558-693f070f262f}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\terrain sources">
+      <UniqueIdentifier>{1d7efc9c-4c03-4264-ada7-eb66a4b396e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\light sources">
+      <UniqueIdentifier>{d5240e2f-dfd3-4a63-b98e-eff4fb7c8242}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external">
+      <UniqueIdentifier>{d2a39c6e-bdcc-4658-80fe-80414367c67f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particle">
+      <UniqueIdentifier>{6872ff63-d13f-42d0-84ab-00320a5c31fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\misc">
+      <UniqueIdentifier>{86c4b465-5e95-4f6e-817d-143252fd20e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\collision">
+      <UniqueIdentifier>{3d664f7b-ecc8-4dfe-ac32-063ea8b16d20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{d669d6bf-453b-4755-81f4-86e034fe8740}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\extern">
+      <UniqueIdentifier>{442e9b42-6f0d-4d56-877e-30bd4c90b9bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\terrain headers">
+      <UniqueIdentifier>{ea598f18-d711-4b17-b775-c3acd030dc78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\interfaces">
+      <UniqueIdentifier>{766b7ec9-7459-46f1-9060-3c8fceb1293b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\light headers">
+      <UniqueIdentifier>{c2728a3b-57e1-4c8b-97d9-35c948d55ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\particle.h">
+      <UniqueIdentifier>{e845db88-6cc2-491b-8be1-fab24e0d9e08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\misc.h">
+      <UniqueIdentifier>{04becadf-cc43-413c-9a19-ff20c932b15c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\wmvsync.h">
+      <UniqueIdentifier>{a9760bce-e2db-4980-a9de-8a01849f1bbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{f4e3ad51-3a4b-4eae-b80a-b8aeaf6dffe9}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Clipper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\Debug_MemoryManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IStorm3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Adapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Bone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Face.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Helper_AInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Helper_Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_KeyFrames.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Line.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Material_TextureLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Model_Object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Model_Object_Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_resourcemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Scene_PicList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Scene_PicList_Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Scene_PicList_Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_ShaderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_string_util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3d_Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Texture_Video.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Vertex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_video_player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_videostreamer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Terrain.cpp">
+      <Filter>Source Files\terrain sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_terrain_decalsystem.cpp">
+      <Filter>Source Files\terrain sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_terrain_groups.cpp">
+      <Filter>Source Files\terrain sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_terrain_heightmap.cpp">
+      <Filter>Source Files\terrain sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_terrain_lightmanager.cpp">
+      <Filter>Source Files\terrain sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_terrain_lod.cpp">
+      <Filter>Source Files\terrain sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_terrain_models.cpp">
+      <Filter>Source Files\terrain sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_terrain_renderer.cpp">
+      <Filter>Source Files\terrain sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_terrain_utils.cpp">
+      <Filter>Source Files\terrain sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_fakespotlight.cpp">
+      <Filter>Source Files\light sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_spotlight.cpp">
+      <Filter>Source Files\light sources</Filter>
+    </ClCompile>
+    <ClCompile Include="storm3d_spotlight_shared.cpp">
+      <Filter>Source Files\light sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\AreaMap.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\file_list.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\file_package_manager.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\input_file_stream.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\input_stream.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\input_stream_wrapper.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\standard_package.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_ParticleSystem.cpp">
+      <Filter>Source Files\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_ParticleSystem_PMH.cpp">
+      <Filter>Source Files\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_ProceduralManager.cpp">
+      <Filter>Source Files\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm3D_Mesh_CollisionTable.cpp">
+      <Filter>Source Files\collision</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Clipper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DatatypeDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Iterator_TRBMOList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="S3D_ModelFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Storm3d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_adapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Storm3D_Bone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_common_imp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_mesh_collisiontable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_model_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Storm3D_ObstacleMapDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_resourcemanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_scene_lighthandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_scene_piclist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Storm3D_ShaderManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_string_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Storm3D_structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_video_player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_videostreamer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexFormats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_aabb.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_array.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_collision.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_collisioninfo.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_color.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_common.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_cylinder.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_frustum.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_matrix.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_oobb.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_plane.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_ptrlist.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_qtree.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_qtree_static.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_quat.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_ray.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_rect.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_sphere.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_sptr.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_sptrlist.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_string.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_UI.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\c2_vectors.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Terrain.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\istorm3d_terrain_decalsystem.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\istorm3D_terrain_renderer.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="istorm3d_terrain_rendererbase.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_terrain.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_terrain_decalsystem.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_terrain_groups.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_terrain_heightmap.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_terrain_lightmanager.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_terrain_lod.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_terrain_models.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_terrain_renderer.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_terrain_utils.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Font.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Helper.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Logger.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Material.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Mesh.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Model.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Scene.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\istorm3d_streambuffer.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Texture.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\istorm3d_videostreamer.h">
+      <Filter>Header Files\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\istorm3d_fakespotlight.h">
+      <Filter>Header Files\light headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\istorm3d_spotlight.h">
+      <Filter>Header Files\light headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_fakespotlight.h">
+      <Filter>Header Files\light headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_spotlight.h">
+      <Filter>Header Files\light headers</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_spotlight_shared.h">
+      <Filter>Header Files\light headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_Particle.h">
+      <Filter>Header Files\particle.h</Filter>
+    </ClInclude>
+    <ClInclude Include="storm3d_particle.h">
+      <Filter>Header Files\particle.h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IStorm3D_ProceduralManager.h">
+      <Filter>Header Files\misc.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Storm3D_ProceduralManager.h">
+      <Filter>Header Files\misc.h</Filter>
+    </ClInclude>
+    <ClInclude Include="wmvsync\reader.h">
+      <Filter>Header Files\wmvsync.h</Filter>
+    </ClInclude>
+    <ClInclude Include="wmvsync\rostream.h">
+      <Filter>Header Files\wmvsync.h</Filter>
+    </ClInclude>
+    <ClInclude Include="wmvsync\StdAfx.h">
+      <Filter>Header Files\wmvsync.h</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Snapshot\storm.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

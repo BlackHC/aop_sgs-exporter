@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{c50c6e05-5fac-4548-8005-cd7a9b9eb2d0}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\editor source">
+      <UniqueIdentifier>{8fb99060-86fb-40dc-92c8-78775fbaaa5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\filesystem source">
+      <UniqueIdentifier>{96217f54-6738-42be-b930-92e66d3787b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external">
+      <UniqueIdentifier>{0474dd2f-e1f0-4c0a-8a21-90608c76d89d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sound">
+      <UniqueIdentifier>{4864ff43-38c8-48b6-8786-26a7729c4bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{2569d7b2-f284-4ad9-a004-b2a1aaf0bf63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{fd6a16ae-6902-4271-9def-e8ac8d67e037}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{00fadba6-815b-4205-ad31-19ff49a7cf56}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\viewer\application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\viewer\bone_items.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\viewer\model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\viewer\viewer_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\align_units.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\camera.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\color_component.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\color_picker.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\command_list.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common_dialog.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dialog.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dialog_utils.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\mouse.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\parser.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\storm.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\storm_model_utils.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\window.cpp">
+      <Filter>Source Files\editor source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\filesystem\input_file_stream.cpp">
+      <Filter>Source Files\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\filesystem\input_stream.cpp">
+      <Filter>Source Files\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\filesystem\output_file_stream.cpp">
+      <Filter>Source Files\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\filesystem\output_stream.cpp">
+      <Filter>Source Files\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\AreaMap.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\assert.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\ColorMap.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\Debug_MemoryManager.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\filesystem\file_list.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\filesystem\file_package_manager.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ui\LightManager.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\LightMap.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\system\Logger.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\SelfIlluminationChanger.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\filesystem\standard_package.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\convert\str2int.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\filesystem\zip_package.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sound\AmplitudeArray.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sound\LipsyncManager.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sound\LipsyncProperties.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sound\SoundLib.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sound\WaveReader.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\procedural_applier.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\util\procedural_properties.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\viewer\application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\viewer\bone_items.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\viewer\model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\viewer\resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\viewer\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\..\viewer\viewer.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

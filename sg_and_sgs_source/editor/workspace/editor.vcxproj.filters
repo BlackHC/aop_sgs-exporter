@@ -1,0 +1,820 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{b56b75bb-70ba-4d04-8669-0534fc50f4ef}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\gui source">
+      <UniqueIdentifier>{dcdd4050-c30a-4d12-a352-8d39d4d99992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mode source">
+      <UniqueIdentifier>{269401d7-0dba-4ec9-bf99-8859c5203133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\terrain source">
+      <UniqueIdentifier>{1214d97a-2720-48eb-b9dc-0e24808d9658}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\parser source">
+      <UniqueIdentifier>{112a0faa-3ebd-4af8-8b9c-e137faaf4083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external">
+      <UniqueIdentifier>{0f98019c-ee8f-4ce8-a74f-c8bc3e4790be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\util source">
+      <UniqueIdentifier>{d737b085-9f75-4cd0-8ee0-8564592e6098}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\filesystem source">
+      <UniqueIdentifier>{3b0f21d8-0a1c-4336-9286-d1afe911f2e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\ui source">
+      <UniqueIdentifier>{03c75479-e619-4c12-94b0-4a56e0eea981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\container">
+      <UniqueIdentifier>{7c5e8882-faf0-4abb-a994-0fc50c58fccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\system">
+      <UniqueIdentifier>{bca2e122-3886-4d74-8808-73ce2cea34b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\game source">
+      <UniqueIdentifier>{99886ba8-c817-4d8e-9a26-ee87d2af1a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\convert source">
+      <UniqueIdentifier>{4f28b978-cc0a-4152-b431-d1074daf7a2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\export source">
+      <UniqueIdentifier>{387a49a5-0ef0-47f0-941d-de8b8c8935ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\storm source">
+      <UniqueIdentifier>{1062e599-d526-407f-8256-8e592b144490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\unit source">
+      <UniqueIdentifier>{2d999f6d-209e-4683-bf1a-923bdce20c2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{ec6bb728-6c36-4bb3-9fbc-6641ad14dbd5}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\storm interfaces">
+      <UniqueIdentifier>{ac7df5f9-d731-4646-a6a6-65d8b8d2ab3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gui headers">
+      <UniqueIdentifier>{a77e0586-056b-4501-a15a-0a9059847b8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\mode headers">
+      <UniqueIdentifier>{77bb08b4-0c4e-4a90-b701-e1c074653046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\filesystem headers">
+      <UniqueIdentifier>{ed7dcf7c-d670-424f-b2d2-a6a1bed9d1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\terrain headers">
+      <UniqueIdentifier>{789af153-2683-4d73-972c-c818c050ed53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\export headers">
+      <UniqueIdentifier>{c43ab886-4f61-4b5b-ab56-abf2e2f1a13c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\storm headers">
+      <UniqueIdentifier>{362390eb-cc80-4448-9889-71e9eafb6630}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\unit headers">
+      <UniqueIdentifier>{c3f0c901-088c-4a5e-a379-d164a7d9fa25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\parser headers">
+      <UniqueIdentifier>{9ec11a5b-2374-4596-919d-fd78432943a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{87dc4910-2245-47fa-a321-915f48907443}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="minizip">
+      <UniqueIdentifier>{7b52a4a5-2705-4caf-ae0a-3592f7c967a7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\align_units.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\command_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor_object_state.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor_state.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\explosion_scripts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\file_iterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\file_wrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\object_settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\physics_mass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\string_properties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UniqueEditorObjectHandleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\color_component.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\color_picker.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common_dialog.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dialog.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dialog_utils.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\export_dialog.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\string_dialog.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\texture_layer.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\window.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\building_mode.cpp">
+      <Filter>Source Files\mode source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\decorator_mode.cpp">
+      <Filter>Source Files\mode source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\light_mode.cpp">
+      <Filter>Source Files\mode source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\object_mode.cpp">
+      <Filter>Source Files\mode source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scene_mode.cpp">
+      <Filter>Source Files\mode source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_mode.cpp">
+      <Filter>Source Files\mode source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\unit_mode.cpp">
+      <Filter>Source Files\mode source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\collision_model.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\group_list.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\group_list_utils.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\group_save_dialog.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\height_modifier.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\helper_visualization.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\hmap_loader.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mapped_object.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\splat_generator.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_buildings.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_colormap.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_decorators.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_lightmap.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_lights.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_objects.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_options.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_texture_generator.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_textures.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\terrain_units.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\unit_properties_dialog.cpp">
+      <Filter>Source Files\terrain source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parser.cpp">
+      <Filter>Source Files\parser source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\convert\int64_to_hex.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\AreaMap.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\assert.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\BuildingHandler.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\BuildingMap.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\ColorMap.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\Debug_MemoryManager.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\FileTimestampChecker.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\Floodfill.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\FogApplier.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\jpak.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\LightMap.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\mod_selector.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\ObjectDurabilityParser.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\procedural_applier.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\procedural_properties.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\SelfIlluminationChanger.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\SoundMaterialParser.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\util\TextureCache.cpp">
+      <Filter>Source Files\external\util source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\file_list.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\file_package_manager.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\input_compressed_file_stream.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\input_file_stream.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\input_stream.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\input_stream_wrapper.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\memory_stream.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\output_compressed_file_stream.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\output_file_stream.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\output_stream.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\standard_package.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\filesystem\zip_package.cpp">
+      <Filter>Source Files\external\filesystem source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ui\Decoration.cpp">
+      <Filter>Source Files\external\ui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ui\DecorationManager.cpp">
+      <Filter>Source Files\external\ui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ui\LightManager.cpp">
+      <Filter>Source Files\external\ui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ui\VisualObject.cpp">
+      <Filter>Source Files\external\ui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ui\VisualObjectModel.cpp">
+      <Filter>Source Files\external\ui source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\container\LinkedList.cpp">
+      <Filter>Source Files\external\container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\Logger.cpp">
+      <Filter>Source Files\external\system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\SystemRandom.cpp">
+      <Filter>Source Files\external\system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\Timer.cpp">
+      <Filter>Source Files\external\system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\GameConfigs.cpp">
+      <Filter>Source Files\external\game source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\GameOption.cpp">
+      <Filter>Source Files\external\game source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\GameOptionManager.cpp">
+      <Filter>Source Files\external\game source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\convert\str2int.cpp">
+      <Filter>Source Files\external\convert source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\exporter.cpp">
+      <Filter>Source Files\export source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\exporter_lights.cpp">
+      <Filter>Source Files\export source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\exporter_objects.cpp">
+      <Filter>Source Files\export source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\exporter_scene.cpp">
+      <Filter>Source Files\export source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\exporter_scripts.cpp">
+      <Filter>Source Files\export source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\exporter_units.cpp">
+      <Filter>Source Files\export source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\string_replace.cpp">
+      <Filter>Source Files\export source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\storm.cpp">
+      <Filter>Source Files\storm source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\storm_geometry.cpp">
+      <Filter>Source Files\storm source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\storm_model_utils.cpp">
+      <Filter>Source Files\storm source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\storm_texture.cpp">
+      <Filter>Source Files\storm source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\unit_hierarchy.cpp">
+      <Filter>Source Files\unit source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\unit_scripts.cpp">
+      <Filter>Source Files\unit source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zlib1.2.3\contrib\minizip\ioapi.c">
+      <Filter>minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zlib1.2.3\contrib\minizip\iowin32.c">
+      <Filter>minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zlib1.2.3\contrib\minizip\unzip.c">
+      <Filter>minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ueoh_to_id_string.cpp">
+      <Filter>Source Files\gui source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\file_iterator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\util\jpak.h">
+      <Filter>Source Files\external\util source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\align_units.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\command_list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor_object_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\explosion_scripts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\file_wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\icommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ieditor_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\object_settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\physics_mass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\string_properties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_array.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_color.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_common.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_matrix.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_plane.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_ptrlist.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_quat.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_rect.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_sptr.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_sptrlist.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_string.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_thread.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_UI.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\c2_vectors.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\DatatypeDef.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Bone.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Font.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Helper.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Light.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Line.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Material.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Mesh.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Model.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Particle.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Scene.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Terrain.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\IStorm3D_Texture.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\Iterator_TRBMOList.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\keyb3.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\Storm3D_Common.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\Storm3D_Datatypes.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\Storm3D_ObstacleMapDefs.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storm\include\Storm3D_UI.h">
+      <Filter>Header Files\storm interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\color_component.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\color_picker.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common_dialog.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dialog.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dialog_utils.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\export_dialog.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\string_dialog.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\texture_layer.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\window.h">
+      <Filter>Header Files\gui headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\building_mode.h">
+      <Filter>Header Files\mode headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\decorator_mode.h">
+      <Filter>Header Files\mode headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\imode.h">
+      <Filter>Header Files\mode headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\light_mode.h">
+      <Filter>Header Files\mode headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\object_mode.h">
+      <Filter>Header Files\mode headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scene_mode.h">
+      <Filter>Header Files\mode headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_mode.h">
+      <Filter>Header Files\mode headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unit_mode.h">
+      <Filter>Header Files\mode headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\convert_type.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\file_package_manager.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\ifile_package.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\input_file_stream.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\input_stream.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\memory_stream.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\output_file_stream.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\output_stream.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\standard_package.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\filesystem\zip_package.h">
+      <Filter>Header Files\filesystem headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\collision_model.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\group_list.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\group_list_utils.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\group_save_dialog.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\height_modifier.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\helper_visualization.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hmap_loader.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mapped_object.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\splat_generator.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_buildings.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_colormap.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_decorators.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_lightmap.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_lights.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_objects.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_options.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_texture_generator.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_textures.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\terrain_units.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unit_properties_dialog.h">
+      <Filter>Header Files\terrain headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\export_options.h">
+      <Filter>Header Files\export headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\exporter.h">
+      <Filter>Header Files\export headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\exporter_lights.h">
+      <Filter>Header Files\export headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\exporter_objects.h">
+      <Filter>Header Files\export headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\exporter_scene.h">
+      <Filter>Header Files\export headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\exporter_scripts.h">
+      <Filter>Header Files\export headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\exporter_units.h">
+      <Filter>Header Files\export headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\string_replace.h">
+      <Filter>Header Files\export headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\storm.h">
+      <Filter>Header Files\storm headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\storm_geometry.h">
+      <Filter>Header Files\storm headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\storm_model_utils.h">
+      <Filter>Header Files\storm headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\storm_texture.h">
+      <Filter>Header Files\storm headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unit_hierarchy.h">
+      <Filter>Header Files\unit headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unit_properties.h">
+      <Filter>Header Files\unit headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unit_scripts.h">
+      <Filter>Header Files\unit headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parser.h">
+      <Filter>Header Files\parser headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\string_conversions.h">
+      <Filter>Header Files\parser headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\resource\resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\ioapi.h">
+      <Filter>minizip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\iowin32.h">
+      <Filter>minizip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\unzip.h">
+      <Filter>minizip</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\resource\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resource\cursor1.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resource\e_32.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resource\ico00001.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resource\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resource\icon2.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\resource\Script1.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
