@@ -3482,12 +3482,13 @@ void Storm3D_Model::FreeMemoryResources()
 		obj->GetBoundingBox();
 		obj->GetBoundingSphere();
 
-		delete[] m->vertexes;
+		// NOTE: do not free vertex and face data (for obj export!!) [5/21/2012 kirschan2]
+		/*delete[] m->vertexes;
 		m->vertexes = 0;
 		m->vertex_amount = 0;
 		delete[] m->faces[0];
 		m->faces[0] = 0;
-		m->face_amount[0] = 0;
+		m->face_amount[0] = 0;*/
 	}
 }
 

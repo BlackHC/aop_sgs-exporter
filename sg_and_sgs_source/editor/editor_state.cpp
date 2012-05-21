@@ -25,6 +25,7 @@
 #include "decorator_mode.h"
 #include "light_mode.h"
 
+#include "../blackhc/visitor.h"
 #include "../filesystem/output_stream.h"
 #include "../filesystem/input_stream.h"
 #include "../ui/lightmanager.h"
@@ -214,6 +215,11 @@ struct EditorStateData
 		for(unsigned int i = 0; i < modes.size(); ++i)
 			modes[i]->reset();
 	}
+
+	void visitGameObjects( Visitor & visitor ) 
+	{
+		objectMode.visitGameObjects( visitor );
+	}
 };
 
 EditorState::EditorState(Gui &gui, Storm &storm, Camera &camera)
@@ -224,6 +230,10 @@ EditorState::EditorState(Gui &gui, Storm &storm, Camera &camera)
 
 EditorState::~EditorState()
 {
+}
+
+void EditorState::visitGameObjects( Visitor &visitor ) {
+	data->visitGameObjects( visitor );
 }
 
 void EditorState::tick()

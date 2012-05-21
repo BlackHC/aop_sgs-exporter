@@ -21,6 +21,7 @@
 #include "file_iterator.h"
 #include "UniqueEditorObjectHandleManager.h"
 #include "editor_object_state.h"
+#include "../blackhc/objexport.h"
 
 #include "common_dialog.h"
 #include "../filesystem/input_file_stream.h"
@@ -136,6 +137,10 @@ namespace {
 		:	editorState(editorState_),
 			storm(storm_)
 		{
+		}
+
+		void visitGameObjects( Visitor &visitor ) {
+			editorState.visitGameObjects( visitor );
 		}
 
 		void save()
@@ -434,6 +439,41 @@ namespace {
 
 			sharedData.save();
 			setFileTitle(gui.getMainWindow(), sharedData.fileName);
+		}
+	};
+
+	class ExportAsCommand: public ICommand
+	{
+		SharedData &sharedData;
+		Gui &gui;
+
+	public:
+		ExportAsCommand(SharedData &sharedData_, Gui &gui_)
+			:	sharedData(sharedData_),
+			gui(gui_)
+		{
+		}
+
+		void execute(int id)
+		{
+			std::string filterString = "obj files";
+			filterString += char(0);
+			filterString += "*.obj";
+			filterString += char(0);
+			filterString += "*.* files";
+			filterString += char(0);
+			filterString += "*.*";
+			filterString += char(0);
+			filterString += char(0);
+
+			std::string fileName = getSaveFileName(filterString, "Editor\\Expot as..", false);
+
+			//sharedData.save();
+			blackhc::ObjExporter exporter( fileName );
+
+			exporter.startExport();
+			sharedData.editorState.visitGameObjects( exporter.getVisitor() );
+			exporter.finishExport();
 		}
 	};
 
@@ -874,6 +914,7 @@ struct ApplicationData
 	ReloadCommand reloadCommand;
 	ResetCommand resetCommand;
 
+	ExportAsCommand exportAsCommand;
 	ExportCommand exportCommand;
 	MultiExportCommand multiExportCommand;
 
@@ -887,6 +928,7 @@ struct ApplicationData
 		newCommand(gui.getMainWindow(), sharedData, gui),
 		openCommand(sharedData, gui),
 		saveAsCommand(sharedData, gui, true),
+		exportAsCommand( sharedData, gui ),
 		saveCommand(sharedData, gui, false),
 		quitCommand(gui.getMainWindow()),
 		reloadCommand(storm, sharedData, gui),
@@ -899,6 +941,7 @@ struct ApplicationData
 
 		gui.getMainWindow().getCommandList().addCommand(ID_FILE__OPEN, &openCommand);
 		gui.getMainWindow().getCommandList().addCommand(ID_FILE__SAVEAS, &saveAsCommand);
+		gui.getMainWindow().getCommandList().addCommand(ID_FILE__EXPORTAS, &exportAsCommand);
 		gui.getMainWindow().getCommandList().addCommand(ID_FILE_EXPORTTOGAME, &exportCommand);
 		gui.getMainWindow().getCommandList().addCommand(ID_FILE_MULTIEXPORT, &multiExportCommand);
 		gui.getMenuDialog().getCommandList().addCommand(IDC_SAVE, &saveCommand);

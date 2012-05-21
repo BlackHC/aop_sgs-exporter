@@ -19,6 +19,8 @@
 #include "group_list.h"
 #include "UniqueEditorObjectHandle.h"
 
+struct Visitor;
+
 namespace frozenbyte {
 namespace filesystem {
 	class InputStream;
@@ -143,6 +145,7 @@ public:
 	void doExport(Exporter &exporter) const;
 	filesystem::OutputStream &writeStream(filesystem::OutputStream &stream) const;
 	filesystem::InputStream &readStream(filesystem::InputStream &stream);
+	void visitGameObjects( Visitor & visitor );
 };
 
 inline filesystem::OutputStream &operator << (filesystem::OutputStream &stream, const TerrainObjects &objects)

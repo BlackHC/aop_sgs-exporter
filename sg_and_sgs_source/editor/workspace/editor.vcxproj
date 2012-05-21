@@ -207,7 +207,9 @@
       <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -1310,6 +1312,8 @@
     <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\ioapi.h" />
     <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\iowin32.h" />
     <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\unzip.h" />
+    <ClInclude Include="..\..\blackhc\objexport.h" />
+    <ClInclude Include="..\..\blackhc\visitor.h" />
     <ClInclude Include="..\file_iterator.h" />
     <ClInclude Include="..\..\util\jpak.h" />
     <ClInclude Include="..\align_units.h" />

@@ -17,6 +17,8 @@
 #include "command_list.h"
 #include "common_dialog.h"
 
+#include "../blackhc/visitor.h"
+
 //#include "istream.h"
 //#include "ostream.h"
 #include "object_settings.h"
@@ -2552,6 +2554,11 @@ filesystem::InputStream &ObjectMode::readStream(filesystem::InputStream &stream)
 {
 	data->sharedData.readStream(stream);
 	return stream;
+}
+
+void ObjectMode::visitGameObjects( Visitor & visitor )
+{
+	data->sharedData.terrainObjects.visitGameObjects( visitor );	
 }
 
 } // end of namespace editor

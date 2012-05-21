@@ -88,6 +88,9 @@
     <Filter Include="minizip">
       <UniqueIdentifier>{7b52a4a5-2705-4caf-ae0a-3592f7c967a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="blackhc">
+      <UniqueIdentifier>{63770894-3790-46c1-96f8-e67f99b6054c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\align_units.cpp">
@@ -790,6 +793,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\unzip.h">
       <Filter>minizip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\blackhc\objexport.h">
+      <Filter>blackhc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\blackhc\visitor.h">
+      <Filter>blackhc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,8 @@
 #include <boost/scoped_ptr.hpp>
 #endif
 
+struct Visitor;
+
 namespace frozenbyte {
 namespace editor {
 
@@ -52,6 +54,7 @@ public:
 	void doExport(Exporter &exporter) const;
 	filesystem::OutputStream &writeStream(filesystem::OutputStream &stream) const;
 	filesystem::InputStream &readStream(filesystem::InputStream &stream);
+	void visitGameObjects( Visitor & visitor );
 };
 
 } // end of namespace editor

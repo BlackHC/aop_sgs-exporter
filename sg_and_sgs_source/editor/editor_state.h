@@ -11,6 +11,8 @@
 #include "ieditor_state.h"
 #endif
 
+struct Visitor;
+
 namespace frozenbyte {
 namespace filesystem {
 	class InputStream;
@@ -35,6 +37,8 @@ class EditorState: public IEditorState
 public:
 	EditorState(Gui &gui, Storm &storm, Camera &camera);
 	~EditorState();
+
+	void visitGameObjects( Visitor &visitor );
 
 	void tick();
 	void update();

@@ -46,6 +46,7 @@
 
 #include <time.h>
 
+#include "../blackhc/visitor.h"
 
 using namespace std;
 
@@ -1683,33 +1684,6 @@ void TerrainObjects::doExport(Exporter &exporter) const
 		if(!metaModel.empty())
 			models.insert(metaModel);
 
-		/*
-		// Ensure export for models which have no instances (explosion objects etc)
-		{
-			ObjectData &objectData = data->objectSettings.getSettings((*it).first);
-			
-			const std::string &explosion = objectData.explosionObject;
-			if(explosion.empty() || explosion == "(disappear)")
-				continue;
-
-			TerrainObjectsData::ModelContainer::const_iterator i = data->models.find(explosion);
-			if(i == data->models.end())
-			{
-				if(models.find(explosion) == models.end())
-					models.insert(explosion);
-				
-				continue;
-			}
-
-			const TerrainModel &tm = it->second;
-			if(!tm.objects.empty())
-				continue;
-
-			if(models.find(explosion) == models.end())
-				models.insert(explosion);
-		}
-		*/
-
 		// We need to loop all childs in hierarchy!
 
 		std::string name = it->first;
@@ -1735,25 +1709,6 @@ void TerrainObjects::doExport(Exporter &exporter) const
 			if(models.find(explosion) == models.end())
 				models.insert(explosion);
 			name = explosion;
-
-			/*
-			TerrainObjectsData::ModelContainer::const_iterator i = data->models.find(explosion);
-			if(i == data->models.end())
-			{
-				if(models.find(explosion) == models.end())
-					models.insert(explosion);
-				
-				break;
-			}
-
-			const TerrainModel &tm = it->second;
-			if(!tm.objects.empty())
-				break;
-			if(models.find(explosion) == models.end())
-				models.insert(explosion);
-
-			name = explosion;
-			*/
 		}
 	}
 
@@ -1844,6 +1799,20 @@ void TerrainObjects::showNoCollisionObjects()
 {
 	const char *filters[1] = { "*NOCOLLISION" };
 	showObjectsImpl(filters, 1, false);
+}
+
+void TerrainObjects::visitGameObjects( Visitor & visitor )
+{
+	for(TerrainObjectsData::ModelContainer::const_iterator it = data->models.begin(); it != data->models.end(); ++it)
+	{
+		const TerrainModel &tm = it->second;
+		for( int i = 0 ; i < tm.objects.size() ; i++ ) {
+			const Object &object = tm.objects[i];
+
+			IStorm3D_Model *model = data->storm.terrain->getInstanceModel( tm.terrainId, object.id );
+			visitor.visit( *model );
+		}
+	}
 }
 
 } // end of namespace editor

@@ -567,6 +567,8 @@
 #define IDM_SAVE                        40026
 #define ID_Menu                         40027
 #define ID_FILE_MULTIEXPORT             40028
+#define ID_FILE_EXPORTAS                40029
+#define ID_FILE__EXPORTAS               40030
 
 // Next default values for new objects
 // 
@@ -574,7 +576,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        147
-#define _APS_NEXT_COMMAND_VALUE         40029
+#define _APS_NEXT_COMMAND_VALUE         40031
 #define _APS_NEXT_CONTROL_VALUE         1240
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
