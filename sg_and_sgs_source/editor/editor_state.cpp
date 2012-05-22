@@ -218,7 +218,9 @@ struct EditorStateData
 
 	void visitGameObjects( Visitor & visitor ) 
 	{
+		terrainMode.visitGameObjects( visitor );
 		objectMode.visitGameObjects( visitor );
+		buildingMode.visitGameObjects( visitor );
 	}
 };
 

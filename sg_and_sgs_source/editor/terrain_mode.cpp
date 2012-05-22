@@ -28,6 +28,8 @@
 #include "../ui/lightmanager.h"
 #include "../util/mod_selector.h"
 
+#include "../blackhc/visitor.h"
+
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 #include <boost/scoped_array.hpp>
@@ -386,6 +388,11 @@ namespace {
 			noValueUpdate = true;
 			updateDialog();
 			noValueUpdate = false;
+		}
+
+		void visitGameObjects( Visitor & visitor ) 
+		{
+			visitor.heightmap( heightMap, mapSize, realSize );
 		}
 	};
 
@@ -886,6 +893,11 @@ filesystem::InputStream &TerrainMode::readStream(filesystem::InputStream &stream
 {
 	data->sharedData.readStream(stream);
 	return stream;
+}
+
+void TerrainMode::visitGameObjects( Visitor & visitor )
+{
+	data->sharedData.visitGameObjects( visitor );
 }
 
 } // end of namespace editor

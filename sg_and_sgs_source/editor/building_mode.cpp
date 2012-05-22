@@ -19,6 +19,8 @@
 #include "../filesystem/input_stream.h"
 #include "../util/mod_selector.h"
 
+#include "../blackhc/visitor.h"
+
 #include <map>
 #include <vector>
 #include <istorm3d.h>
@@ -517,6 +519,11 @@ filesystem::InputStream &BuildingMode::readStream(filesystem::InputStream &strea
 	data->sharedData.updateDialog();
 
 	return stream;
+}
+
+void BuildingMode::visitGameObjects( Visitor & visitor )
+{
+	data->sharedData.terrainBuildings.visitGameObjects( visitor );
 }
 
 } // end of namespace editor

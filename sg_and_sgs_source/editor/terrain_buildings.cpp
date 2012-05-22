@@ -21,6 +21,8 @@
 #include "../ui/lightmanager.h"
 #include <boost/shared_ptr.hpp>
 
+#include "../blackhc/visitor.h"
+
 #include <istorm3d.h>
 #include <istorm3d_model.h>
 #include <map>
@@ -786,6 +788,24 @@ filesystem::InputStream &TerrainBuildings::readStream(filesystem::InputStream &s
 {
 	data->readStream(stream);
 	return stream;
+}
+
+void TerrainBuildings::visitGameObjects( Visitor & visitor )
+{
+	std::map<std::string, TerrainBuilding>::iterator it = data->buildings.begin();
+	for(; it != data->buildings.end(); ++it)
+	{
+		TerrainBuilding &terrainBuilding = it->second;
+		
+		for(unsigned int i = 0; i < terrainBuilding.instances.size(); ++i)
+		{
+			BuildingInstance &instance = terrainBuilding.instances[i];
+			
+			visitor.visit( *instance.model );
+			// don't add the floor model. it only contains the floor part of a building
+			// this is used so you can walk into buildings and fades to that model
+		}
+	}
 }
 
 } // end of namespace editor
