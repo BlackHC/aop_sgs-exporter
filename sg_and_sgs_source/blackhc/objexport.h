@@ -175,13 +175,13 @@ namespace blackhc {
 						int rightdown = getOffset( xIndex + 1, yIndex + 1 );
 
 						out << "f";
-						outputOffset( base );						
 						outputOffset( right );
+						outputOffset( base );
 						outputOffset( down );
 						out << "\n"
 							<< "f";
-						outputOffset( down );
 						outputOffset( right );
+						outputOffset( down );
 						outputOffset( rightdown );
 						out << "\n";
 					}
