@@ -1805,6 +1805,8 @@ void TerrainObjects::visitGameObjects( Visitor & visitor )
 {
 	for(TerrainObjectsData::ModelContainer::const_iterator it = data->models.begin(); it != data->models.end(); ++it)
 	{
+		visitor.terrainObjectName( it->first );
+
 		const TerrainModel &tm = it->second;
 		for( int i = 0 ; i < tm.objects.size() ; i++ ) {
 			const Object &object = tm.objects[i];

@@ -3,6 +3,8 @@
 #pragma warning(disable:4103)
 #pragma warning(disable:4786)
 
+#include <boost/algorithm/string.hpp>
+
 #include "application.h"
 #include "gui.h"
 #include "dialog.h"
@@ -22,6 +24,7 @@
 #include "UniqueEditorObjectHandleManager.h"
 #include "editor_object_state.h"
 #include "../blackhc/objexport.h"
+#include "../blackhc/entityexport.h"
 
 #include "common_dialog.h"
 #include "../filesystem/input_file_stream.h"
@@ -460,13 +463,9 @@ namespace {
 			filterString += char(0);
 			filterString += "*.obj";
 			filterString += char(0);
-			filterString += "*.* files";
-			filterString += char(0);
-			filterString += "*.*";
-			filterString += char(0);
 			filterString += char(0);
 
-			std::string fileName = getSaveFileName(filterString, "Editor\\Expot as..", false);
+			std::string fileName = getSaveFileName(filterString, "Editor\\Export as..", false);
 
 			//sharedData.save();
 			blackhc::ObjExporter exporter( fileName );
@@ -474,6 +473,43 @@ namespace {
 			exporter.startExport();
 			sharedData.editorState.visitGameObjects( exporter.getVisitor() );
 			exporter.finishExport();
+			/*}
+			else if( boost::ends_with( fileName, ".entities" ) ) {
+				blackhc::EntityExporter exporter( fileName );
+
+				sharedData.editorState.visitGameObjects( exporter.getVisitor() );
+				exporter.finish();
+			}*/
+		}
+	};
+
+	class ExportEntitiesCommand: public ICommand
+	{
+		SharedData &sharedData;
+		Gui &gui;
+
+	public:
+		ExportEntitiesCommand(SharedData &sharedData_, Gui &gui_)
+			:	sharedData(sharedData_),
+			gui(gui_)
+		{
+		}
+
+		void execute(int id)
+		{
+			std::string filterString = "entities files";
+			filterString += char(0);
+			filterString += "*.entities";
+			filterString += char(0);
+			filterString += char(0);
+
+			std::string fileName = getSaveFileName(filterString, "Editor\\Export Entities", false);
+
+			//sharedData.save();
+			blackhc::EntityExporter exporter( fileName );
+
+			sharedData.editorState.visitGameObjects( exporter.getVisitor() );
+			exporter.finish();
 		}
 	};
 
@@ -915,6 +951,7 @@ struct ApplicationData
 	ResetCommand resetCommand;
 
 	ExportAsCommand exportAsCommand;
+	ExportEntitiesCommand exportEntitiesCommand;
 	ExportCommand exportCommand;
 	MultiExportCommand multiExportCommand;
 
@@ -929,6 +966,7 @@ struct ApplicationData
 		openCommand(sharedData, gui),
 		saveAsCommand(sharedData, gui, true),
 		exportAsCommand( sharedData, gui ),
+		exportEntitiesCommand( sharedData, gui ),
 		saveCommand(sharedData, gui, false),
 		quitCommand(gui.getMainWindow()),
 		reloadCommand(storm, sharedData, gui),
@@ -942,6 +980,7 @@ struct ApplicationData
 		gui.getMainWindow().getCommandList().addCommand(ID_FILE__OPEN, &openCommand);
 		gui.getMainWindow().getCommandList().addCommand(ID_FILE__SAVEAS, &saveAsCommand);
 		gui.getMainWindow().getCommandList().addCommand(ID_FILE__EXPORTAS, &exportAsCommand);
+		gui.getMainWindow().getCommandList().addCommand(ID_FILE__EXPORTENTITIES, &exportEntitiesCommand);
 		gui.getMainWindow().getCommandList().addCommand(ID_FILE_EXPORTTOGAME, &exportCommand);
 		gui.getMainWindow().getCommandList().addCommand(ID_FILE_MULTIEXPORT, &multiExportCommand);
 		gui.getMenuDialog().getCommandList().addCommand(IDC_SAVE, &saveCommand);

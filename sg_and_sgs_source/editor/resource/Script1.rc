@@ -1062,6 +1062,7 @@ BEGIN
         MENUITEM "New",                         ID_FILE__NEW
         MENUITEM "Open",                        ID_FILE__OPEN
         MENUITEM "Save as ...",                 ID_FILE__SAVEAS
+        MENUITEM "Export entities",             ID_FILE__EXPORTENTITIES
         MENUITEM "Export as ...",               ID_FILE__EXPORTAS
         MENUITEM "Export to Game",              ID_FILE_EXPORTTOGAME
         MENUITEM SEPARATOR

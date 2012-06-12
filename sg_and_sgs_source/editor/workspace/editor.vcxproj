@@ -89,6 +89,10 @@
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='shadowground no physics|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='shadowground no physics|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='shadowground no physics|Win32'" />
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">P:\sgs\yaml-cpp\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">P:\sgs\yaml-cpp\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">P:\sgs\yaml-cpp\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">P:\sgs\yaml-cpp\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -122,7 +126,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;odbc32.lib;odbccp32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libyaml-cppmt.lib;gdiplus.lib;comctl32.lib;odbc32.lib;odbccp32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutputPath)editor.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>../../storm/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -216,7 +220,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;winmm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libyaml-cppmtd.lib;gdiplus.lib;comctl32.lib;winmm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutputPath)editor.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>../../storm/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -1312,6 +1316,7 @@
     <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\ioapi.h" />
     <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\iowin32.h" />
     <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\unzip.h" />
+    <ClInclude Include="..\..\blackhc\entityexport.h" />
     <ClInclude Include="..\..\blackhc\objexport.h" />
     <ClInclude Include="..\..\blackhc\visitor.h" />
     <ClInclude Include="..\file_iterator.h" />

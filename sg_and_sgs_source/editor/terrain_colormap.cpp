@@ -16,6 +16,8 @@
 #include <fstream>
 #include <boost/scoped_array.hpp>
 
+#include "../blackhc/visitor.h"
+
 using namespace boost;
 using namespace std;
 
@@ -116,7 +118,7 @@ pixel.color = TColor<unsigned char> (r, g, b);
 		camera->SetFieldOfView(fov);
 
 		// Temp
-		{
+		/*{
 			ofstream stream("color.raw", ios::binary);
 
 			for(int y = -yr; y < yr; ++y)
@@ -125,7 +127,7 @@ pixel.color = TColor<unsigned char> (r, g, b);
 				Pixel &pixel = values[(y + yr) * size.x + (x + xr)];
 				stream << pixel.color.r << pixel.color.g << pixel.color.b;
 			}
-		}
+		}*/
 	}
 
 	TColor<unsigned char> getColor(IStorm3D_ScreenBuffer &screenBuffer) const
@@ -224,8 +226,10 @@ pixel.color = TColor<unsigned char> (r, g, b);
 		stream >> size.x >> size.y;
 		values.resize(size.x * size.y);
 
-	assert(sizeof(Pixel) == 3);
-	stream.read(&values[0].color.r, size.x * size.y * 3);
+		if( !values.empty() ) {
+			assert(sizeof(Pixel) == 3);
+			stream.read(&values[0].color.r, size.x * size.y * 3);
+		}
 		/*
 		for(int i = 0; i < size.x * size.y; ++i)
 		{
@@ -272,6 +276,8 @@ COL TerrainColorMap::getColor(const VC2 &position) const
 
 void TerrainColorMap::doExport(Exporter &exporter) const
 {
+	data->create();
+
 	ExporterScene &scene = exporter.getScene();
 	vector<TColor<unsigned char> > buffer;
 
@@ -292,6 +298,22 @@ filesystem::InputStream &TerrainColorMap::readStream(filesystem::InputStream &st
 {
 	data->read(stream);
 	return stream;
+}
+
+void TerrainColorMap::visitGameObjects( Visitor & visitor )
+{
+	if( visitor.needColormap() ) {
+		create();
+		vector< unsigned char > buffer( data->values.size() );
+
+		for( auto it = data->values.begin() ; it != data->values.end(); ++it) {
+			buffer.push_back(it->color.r);
+			buffer.push_back(it->color.g);
+			buffer.push_back(it->color.b);
+		}
+
+		visitor.colormap( buffer, data->size );
+	}
 }
 
 } // editor

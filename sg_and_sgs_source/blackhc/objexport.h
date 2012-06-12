@@ -7,17 +7,71 @@
 #include "../system/Logger.h"
 #include "IStorm3D_Mesh.h"
 #include "IStorm3D_Model.h"
+#include "c2_vectors.h"
+
+//#include <boost/filesystem/path.hpp>
 
 #include "visitor.h"
 #include <fstream>
+#include <unordered_set>
+#include <boost/algorithm/string.hpp>
+
+#include <GdiPlus.h>
+
+static int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+{
+	using namespace Gdiplus;
+
+	UINT  num = 0;          // number of image encoders
+	UINT  size = 0;         // size of the image encoder array in bytes
+
+	ImageCodecInfo* pImageCodecInfo = NULL;
+
+	GetImageEncodersSize(&num, &size);
+	if(size == 0)
+		return -1;  // Failure
+
+	pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+	if(pImageCodecInfo == NULL)
+		return -1;  // Failure
+
+	GetImageEncoders(num, size, pImageCodecInfo);
+
+	for(UINT j = 0; j < num; ++j)
+	{
+		if( wcscmp(pImageCodecInfo[j].MimeType, format) == 0 )
+		{
+			*pClsid = pImageCodecInfo[j].Clsid;
+			free(pImageCodecInfo);
+			return j;  // Success
+		}    
+	}
+
+	free(pImageCodecInfo);
+	return -1;  // Failure
+}
 
 namespace blackhc {
 	typedef std::vector<IStorm3D_Model> ModelVector;
 	
 	struct ObjExporter {
+		std::string exportDirectory;
 		std::string filename;
-		std::ofstream out;
+		std::string filenameMtl;
+		std::string filenameColormap;
 
+		std::ofstream out;
+		std::ofstream outMtl;
+		int index;
+		
+		std::tr1::unordered_set<std::string> textures;
+
+		enum TextureType {
+			TT_NONE,
+			TT_BASE,
+			TT_BASE2
+		};
+		
 		struct ExporterVisitor : Visitor {
 			ObjExporter &_;
 
@@ -30,16 +84,101 @@ namespace blackhc {
 			void heightmap( const std::vector<unsigned short> heightmap, const VC2I &mapSize, const VC3 &realSize ) {
 				_.exportTerrain( heightmap, mapSize, realSize );
 			}
+
+			void colormap( const std::vector<unsigned char> rgbData, VC2I size ) {
+				_.exportColormap( rgbData, size );
+			}
+
+			bool needColormap() { return true; }
 		};
 
-		ObjExporter( const std::string &filename ) : filename( filename ) {}
+		ObjExporter( const std::string &filepath ) : index( 0 ) {
+			// set export directory and filename
+			int lastSeparator = filepath.find_last_of("\\");
+			if( lastSeparator != filepath.npos ) {
+				exportDirectory = filepath.substr( 0, lastSeparator + 1 );
+				filename = filepath.substr( lastSeparator + 1 );
+			}
+			else {
+				exportDirectory = "";
+				filename = filepath;
+			}
+
+			// set the filenames of the mtl and colormap file
+			const std::string stem = filename.substr( 0, filename.find_last_of(".") );
+			filenameMtl = stem + ".mtl";
+			filenameColormap = stem + "_colormap.png";
+		}
 
 		ExporterVisitor getVisitor() {
 			return ExporterVisitor( *this );
 		}
 
 		void startExport() {
-			out.open( filename );
+			out.open( exportDirectory + filename );
+			outMtl.open( exportDirectory + filenameMtl );
+
+			out << "mtllib " << filenameMtl
+				<< "\n\n";
+		}
+
+		static TextureType getDiffuseTextureType( IStorm3D_Mesh *mesh ) {
+			TextureType type;
+			if( !mesh->GetMaterial() ) {
+				type = TT_NONE;
+			}
+			else if( mesh->GetMaterial()->GetBaseTexture() ) {
+				type = TT_BASE;
+			}
+			else if( mesh->GetMaterial()->GetBaseTexture2() ) {
+				type = TT_BASE2;
+			}
+			else {
+				type = TT_NONE;
+			}
+
+			// make sure the texture filename exists
+			if( !getDiffuseTextureFilename( mesh, type ).empty() ) {
+				return type;
+			}
+			else {
+				return TT_NONE;
+			}
+		}
+
+		static std::string getDiffuseTextureFilename( IStorm3D_Mesh *mesh, const TextureType textureType ) {
+			switch( textureType ) {
+			case TT_NONE:
+				return std::string();
+			case TT_BASE:
+				return mesh->GetMaterial()->GetBaseTexture()->GetFilename();
+			case TT_BASE2:
+				return mesh->GetMaterial()->GetBaseTexture2()->GetFilename();
+			}
+		}
+
+		static std::string getMaterialName( const std::string &textureFilename ) {
+			// assume that every texture has an extension (and directory names contain none)
+			size_t lastDot = textureFilename.find_last_of( '.' );
+			return textureFilename.substr( 0, lastDot );
+		}
+
+		static std::string getLocalTextureFilename( const std::string &filename ) {
+			std::string localName = filename;
+
+			boost::replace_all( localName, "/", "__" );
+			boost::replace_all( localName, "\\", "__" );
+			boost::replace_all( localName, " ", "_" );
+
+			return localName;
+		}
+
+		void outputOffset( int index, TextureType textureType ) {
+			out << " " << index << "/";
+			if( textureType != TT_NONE ) {
+				out << index;
+			}
+			out << "/" << index;
 		}
 
 		void exportModelObject( IStorm3D_Model_Object &modelObject ) {
@@ -50,11 +189,29 @@ namespace blackhc {
 			const int numFaces = mesh->GetFaceCount();
 			const int numVertices = mesh->GetVertexCount();
 
+			if( numFaces == 0 || numVertices == 0 ) {
+				return;
+			}
+
 			const Storm3D_Face *faces = mesh->GetFaceBufferReadOnly();
 			const Storm3D_Vertex *vertices = mesh->GetVertexBufferReadOnly();
 
-			out << "#\tnew object\n";
+			out << "#\tnew object " << modelObject.GetName() << "\n";
 
+			out << "g " << "object_" << index++ << "\n";
+ 			
+			TextureType textureType = getDiffuseTextureType( mesh );
+			std::string diffuseTextureFilename = getDiffuseTextureFilename( mesh, textureType );			
+			if( textureType != TT_NONE ) {
+				std::string materialName = getMaterialName( getLocalTextureFilename( diffuseTextureFilename ) );
+
+				out << "usemtl " << materialName << "\n";
+				textures.insert( diffuseTextureFilename );
+			} 
+			else {
+				out << "usemtl nullTexture\n";
+			}
+			
 			// output vertices
 			for( int v = numVertices - 1 ; v >= 0 ; v-- ) {
 				const Storm3D_Vertex &vertex = vertices[v];
@@ -65,7 +222,15 @@ namespace blackhc {
 				out << "v " << transformedPosition.x << " " << transformedPosition.y << " " << transformedPosition.z << "\n"
 					<< "vn " << transformedNormal.x << " " << transformedNormal.y << " " << transformedNormal.z << "\n";
 
-				// TODO: add texture coordinates
+				// output texture coordinates if available
+				switch( textureType ) {
+				case TT_BASE:
+					out << "vt " << vertex.texturecoordinates.x << " " << vertex.texturecoordinates.y << "\n";
+					break;
+				case TT_BASE2:
+					out << "vt " << vertex.texturecoordinates2.x << " " << vertex.texturecoordinates2.y << "\n";
+					break;
+				}
 			}
 
 			out << "\n";
@@ -74,14 +239,12 @@ namespace blackhc {
 			for( int f = 0 ; f < numFaces ; f++ ) {
 				const Storm3D_Face &face = faces[f];
 
-				int indices[3];
+				out << "f";
 				for( int i = 0 ; i < 3 ; i++ ) { 
-					indices[i] = -int( face.vertex_index[i] ) - 1;
+					int index = -int( face.vertex_index[i] ) - 1;
+					outputOffset( index, textureType );
 				}
-
-				out << "f " << indices[0] << "//" << indices[0] << " "
-					<< indices[1] << "//" << indices[1] << " "
-					<< indices[2] << "//" << indices[2] << "\n";
+				out	<< "\n";
 			}
 
 			out << "\n";
@@ -89,7 +252,7 @@ namespace blackhc {
 
 		struct ExportTerrain {
 			std::ofstream &out;
-
+			
 			const std::vector<unsigned short> heightmap;
 			const VC2I &mapSize;
 			const VC3 &realSize;
@@ -123,7 +286,7 @@ namespace blackhc {
 			}
 
 			void outputOffset( int offset ) {
-				out << " " << offset << "//" << offset;
+				out << " " << offset << "/" << offset << "/" << offset;
 			}
 			
 			ExportTerrain( std::ofstream &out, const std::vector<unsigned short> heightmap, const VC2I &mapSize, const VC3 &realSize )
@@ -134,7 +297,12 @@ namespace blackhc {
 				scale(realSize.x / (mapSize.x - 1), realSize.y / 65535.f, realSize.z / (mapSize.y - 1)) ,
 				numVertices( mapSize.x * mapSize.y )
 			{
-				out << "# terrain\n";
+				out << 
+					"# terrain\n"
+					"g __Terrain__\n"
+					"usemtl __Terrain_ColorMap__\n"
+					"\n";
+					
 				for( int yIndex = 0 ; yIndex < mapSize.y ; yIndex++ ) {
 					for( int xIndex = 0 ; xIndex < mapSize.x ; xIndex++ ) {
 						VC3 position = getPosition( xIndex, yIndex );
@@ -162,7 +330,8 @@ namespace blackhc {
 						}
 
 						out << "v " << position.x << " " << position.y << " " << position.z << "\n"
-							<< "vn " << normal.x << " " << normal.y << " " << normal.z << "\n";
+							<< "vn " << normal.x << " " << normal.y << " " << normal.z << "\n"
+							<< "vt " << float( xIndex ) / (mapSize.x - 1) << " " << float( yIndex ) / (mapSize.y - 1) << "\n";
 					}
 				}
 
@@ -179,7 +348,7 @@ namespace blackhc {
 						outputOffset( base );
 						outputOffset( down );
 						out << "\n"
-							<< "f";
+							"f";
 						outputOffset( right );
 						outputOffset( down );
 						outputOffset( rightdown );
@@ -188,8 +357,7 @@ namespace blackhc {
 				}
 			}
 		};
-
-
+		
 		void exportTerrain( const std::vector<unsigned short> heightmap, const VC2I &mapSize, const VC3 &realSize ) {
 			ExportTerrain( out, heightmap, mapSize, realSize );
 		}
@@ -207,6 +375,25 @@ namespace blackhc {
 				if( name.find( "EditorOnly" ) != name.npos ) {
 					continue;
 				}
+				if (modelObject.GetName() != NULL)
+				{
+					int slen = strlen(modelObject.GetName());
+					if (slen >= 9)
+					{
+						if (strcmp(&modelObject.GetName()[slen - 9], "Collision") == 0)
+						{
+							continue;
+						}
+					}
+					if (strcmp(modelObject.GetName(), "effect_layer") == 0)
+					{
+						continue;
+					}
+					if (strcmp(modelObject.GetName(), "effect_2nd_layer") == 0)
+					{
+						continue;
+					}
+				}
 				
 				exportModelObject( modelObject );
 			}
@@ -216,8 +403,67 @@ namespace blackhc {
 			delete objectIterator;
 		}
 
+		void exportTextures() {
+			outMtl << "newmtl nullTexture\n"
+				"illum 4\n"
+				"Kd 1.00 1.00 1.00\n"
+				"Ka 1.00 1.00 1.00\n"
+				"Tf 1.00 1.00 1.00\n"
+				"Ni 1.00\n\n";
+
+			outMtl << "newmtl __Terrain_ColorMap__\n"
+				"illum 4\n"
+				"Kd 1.00 1.00 1.00\n"
+				"Ka 1.00 1.00 1.00\n"
+				"Tf 1.00 1.00 1.00\n"
+				"map_Kd " << filenameColormap << "\n"
+				"Ni 1.00\n\n";
+
+			for( auto it = textures.begin() ; it != textures.end() ; it++ ) {
+				std::string localName = getLocalTextureFilename( *it );
+				std::string localFilename = exportDirectory + localName;
+				std::string materialName = getMaterialName( localName );
+				
+				/*char absolutePath[512];
+				GetFullPathNameA(it->c_str(), 1024, absolutePath, NULL );*/
+				
+				CopyFileA( it->c_str(), localFilename.c_str(), TRUE );
+
+				outMtl << 
+					"newmtl " << materialName << "\n"
+					"illum 4\n"
+					"Kd 1.00 1.00 1.00\n"
+					"Ka 0.00 0.00 0.00\n"
+					"Tf 1.00 1.00 1.00\n"
+					<< "map_Kd " << localName << "\n"
+					"Ni 1.00\n\n";
+			}
+		}
+
 		void finishExport() {
+			exportTextures();
+
 			out.close();
+			outMtl.close();
+		}
+
+		void exportColormap( const std::vector<unsigned char> rgbData, VC2I size ) 
+		{
+			Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+			ULONG_PTR gdiplusToken;
+			GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
+			{
+				Gdiplus::Bitmap gdiBitmap( size.x, size.y, size.x * 3, PixelFormat24bppRGB, (BYTE*) &rgbData.front() );
+				CLSID pngClsid;
+
+				GetEncoderClsid(L"image/png", &pngClsid);
+				std::wstring wpath;
+				std::string path = exportDirectory + filenameColormap;
+				wpath.assign( path.begin(), path.end() );
+				gdiBitmap.Save( wpath.c_str(), &pngClsid, NULL);
+			}
+			Gdiplus::GdiplusShutdown(gdiplusToken);
 		}
 	};
 }

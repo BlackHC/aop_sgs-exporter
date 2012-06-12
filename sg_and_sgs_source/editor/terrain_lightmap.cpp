@@ -853,7 +853,7 @@ struct TerrainLightMap::Data
 			delete [] unpackedBuf;
 			delete [] packedBuf;
 		} 
-		else 
+		else if( values.size() > 0 )
 		{
 			if(version >= 2)
 			{

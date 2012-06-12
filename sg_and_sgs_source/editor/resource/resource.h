@@ -569,6 +569,9 @@
 #define ID_FILE_MULTIEXPORT             40028
 #define ID_FILE_EXPORTAS                40029
 #define ID_FILE__EXPORTAS               40030
+#define ID_FILE_EXPORTENTITES           40031
+#define ID_FILE__EXPORTENTITES          40032
+#define ID_FILE__EXPORTENTITIES         40033
 
 // Next default values for new objects
 // 
@@ -576,7 +579,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        147
-#define _APS_NEXT_COMMAND_VALUE         40031
+#define _APS_NEXT_COMMAND_VALUE         40034
 #define _APS_NEXT_CONTROL_VALUE         1240
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

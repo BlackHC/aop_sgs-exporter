@@ -221,6 +221,8 @@ struct EditorStateData
 		terrainMode.visitGameObjects( visitor );
 		objectMode.visitGameObjects( visitor );
 		buildingMode.visitGameObjects( visitor );
+
+		colorMap.visitGameObjects( visitor );
 	}
 };
 
@@ -383,8 +385,9 @@ void EditorState::exportData(const ExportOptions &options) const
 
 	exporter.getScene().setHeightmap(heightmapData.heightMap, heightmapData.mapSize, heightmapData.realSize);
 
-	for(unsigned int i = 0; i < data->modes.size(); ++i)
+	for(unsigned int i = 0; i < data->modes.size(); ++i) {
 		data->modes[i]->doExport(exporter);
+	}
 
 	exporter.save(options);
 }

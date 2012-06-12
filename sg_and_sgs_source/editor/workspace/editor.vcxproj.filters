@@ -800,6 +800,9 @@
     <ClInclude Include="..\..\blackhc\visitor.h">
       <Filter>blackhc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\blackhc\entityexport.h">
+      <Filter>blackhc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\resource\bitmap1.bmp">
