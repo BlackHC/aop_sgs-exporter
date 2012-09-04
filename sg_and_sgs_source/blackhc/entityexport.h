@@ -12,19 +12,20 @@
 
 #include "visitor.h"
 #include <fstream>
+#include <ostream>
 
 namespace blackhc {
-	inline YAML::Emitter &operator << (YAML::Emitter &out, const VC3 &v) {
-		return out << YAML::Flow << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
+	inline std::ostream &operator <<( std::ostream &out, const VC3 &v ) {
+		return out << v.x << " " << v.y << " " << v.z;
 	}
 
-	inline YAML::Emitter &operator << (YAML::Emitter &out, const QUAT &v) {
-		return out << YAML::Flow << YAML::BeginSeq << v.x << v.y << v.z << v.w << YAML::EndSeq;
+	inline std::ostream &operator <<( std::ostream &out, const QUAT &v ) {
+		return out << v.x << " " << v.y << " " << v.z << " " << v.w;
 	}
 
 	struct EntityExporter {
 		std::string filepath;
-		YAML::Emitter out;
+		std::ofstream out;
 		std::string objectName;
 
 		struct Visitor : ::Visitor {
@@ -41,8 +42,8 @@ namespace blackhc {
 			}
 		};
 
-		EntityExporter( const std::string &filepath ) : filepath( filepath ) {
-			out << YAML::BeginSeq;
+		EntityExporter( const std::string &filepath ) : filepath( filepath ), out( filepath ) {
+			out << "objName x y z qx qy qz qw bb_minx bb_miny bb_minz bb_maxx bb_maxy bb_maxz\n";
 		}
 
 		Visitor getVisitor() {
@@ -55,17 +56,13 @@ namespace blackhc {
 
 		void exportModel( IStorm3D_Model &model ) {
 			const VC3 &position = model.GetPosition();
-			const QUAT &model.GetRotation();
+			const QUAT &rotation = model.GetRotation();
 			const AABB &aabb = model.GetBoundingBox();
-			out << YAML::BeginSeq << objectName << position << aabb.mmin << aabb.mmax << YAML::EndSeq;
+			out << "\"" << objectName << "\" " << position << " " << rotation << " " << aabb.mmin << " " << aabb.mmax << "\n";
 		}
 
 		void finish() {
-			out << YAML::EndSeq;
-
-			std::ofstream outFile( filepath );
-			outFile << out.c_str();
-			outFile.close();
+			out.close();
 		}
 	};
 }
