@@ -23,8 +23,10 @@
 #include "file_iterator.h"
 #include "UniqueEditorObjectHandleManager.h"
 #include "editor_object_state.h"
+
 #include "../blackhc/objexport.h"
 #include "../blackhc/entityexport.h"
+#include "../blackhc/glsceneexport.h"
 
 #include "common_dialog.h"
 #include "../filesystem/input_file_stream.h"
@@ -49,6 +51,8 @@
 #include <fstream>
 #include <boost/scoped_array.hpp>
 #include <boost/lexical_cast.hpp>
+
+#include <boost/algorithm/string/predicate.hpp>
 
 #ifdef PROJECT_AOV
 #define EDITOR_GZIP_SAVES 1
@@ -450,6 +454,20 @@ namespace {
 		SharedData &sharedData;
 		Gui &gui;
 
+		class DirKeeper
+		{
+			char currentDirectory[1024];
+		public:
+			DirKeeper()
+			{
+				GetCurrentDirectory(sizeof(currentDirectory), currentDirectory);
+			}
+			~DirKeeper()
+			{
+				SetCurrentDirectory(currentDirectory);
+			}
+		};
+
 	public:
 		ExportAsCommand(SharedData &sharedData_, Gui &gui_)
 			:	sharedData(sharedData_),
@@ -459,22 +477,43 @@ namespace {
 
 		void execute(int id)
 		{
-			std::string filterString = "obj files";
-			filterString += char(0);
-			filterString += "*.obj";
-			filterString += char(0);
-			filterString += char(0);
+			char filename[512];
+			{
+				DirKeeper keepDirectory;
 
-			std::string fileName = getSaveFileName(filterString, "Editor\\Export as..", false);
+				OPENFILENAME of = {0};
 
-			//sharedData.save();
-			blackhc::ObjExporter exporter( fileName );
+				of.hwndOwner = nullptr;
+				of.lStructSize = sizeof( OPENFILENAME );
+				of.lpstrFilter = "GLscene\0" "*.glscene\0" "\0" "obj files\0" "*.obj\0";
+				of.lpstrCustomFilter = nullptr;
+				of.nFilterIndex = 0;
 
-			exporter.startExport();
-			sharedData.editorState.visitGameObjects( exporter.getVisitor() );
-			exporter.finishExport();
-			/*}
-			else if( boost::ends_with( fileName, ".entities" ) ) {
+			
+				of.lpstrFile = filename;
+				filename[0] = 0;
+				of.nMaxFile = 512;
+				of.Flags = OFN_OVERWRITEPROMPT;
+			
+				if( !GetSaveFileName( &of ) ) {
+					return;
+				}
+			}
+
+			if( boost::algorithm::ends_with( filename, ".glscene" ) ) {
+				blackhc::GLSceneExporter exporter( filename );
+
+				sharedData.editorState.visitGameObjects( exporter );
+				exporter.save();
+			}
+			else {
+				blackhc::ObjExporter exporter( filename );
+
+				exporter.startExport();
+				sharedData.editorState.visitGameObjects( exporter.getVisitor() );
+				exporter.finishExport();
+			}
+			/*else if( boost::ends_with( fileName, ".entities" ) ) {
 				blackhc::EntityExporter exporter( fileName );
 
 				sharedData.editorState.visitGameObjects( exporter.getVisitor() );

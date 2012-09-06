@@ -796,12 +796,18 @@ void TerrainBuildings::visitGameObjects( Visitor & visitor )
 	for(; it != data->buildings.end(); ++it)
 	{
 		TerrainBuilding &terrainBuilding = it->second;
+
+		if( terrainBuilding.instances.empty() ) {
+			continue;
+		}
+
+		visitor.visitObjectModel( *terrainBuilding.model );
 		
 		for(unsigned int i = 0; i < terrainBuilding.instances.size(); ++i)
 		{
 			BuildingInstance &instance = terrainBuilding.instances[i];
 			
-			visitor.visit( *instance.model );
+			visitor.visitObjectInstance( *instance.model );
 			// don't add the floor model. it only contains the floor part of a building
 			// this is used so you can walk into buildings and fades to that model
 		}

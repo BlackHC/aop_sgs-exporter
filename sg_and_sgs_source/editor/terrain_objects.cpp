@@ -1804,15 +1804,21 @@ void TerrainObjects::showNoCollisionObjects()
 void TerrainObjects::visitGameObjects( Visitor & visitor )
 {
 	for(TerrainObjectsData::ModelContainer::const_iterator it = data->models.begin(); it != data->models.end(); ++it)
-	{
-		visitor.terrainObjectName( it->first );
-
+	{	
 		const TerrainModel &tm = it->second;
+
+		if( tm.objects.empty() ) {
+			continue;
+		}
+
+		visitor.terrainObjectName( it->first );
+		visitor.visitObjectModel( *tm.model );
+
 		for( int i = 0 ; i < tm.objects.size() ; i++ ) {
 			const Object &object = tm.objects[i];
 
 			IStorm3D_Model *model = data->storm.terrain->getInstanceModel( tm.terrainId, object.id );
-			visitor.visit( *model );
+			visitor.visitObjectInstance( *model );
 		}
 	}
 }

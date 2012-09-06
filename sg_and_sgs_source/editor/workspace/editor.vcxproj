@@ -65,7 +65,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutputPath)</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">.\Profile\</OutDir>
@@ -93,6 +93,7 @@
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">P:\sgs\yaml-cpp\lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">P:\sgs\yaml-cpp\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">P:\sgs\yaml-cpp\lib;$(LibraryPath)</LibraryPath>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">editor</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -107,7 +108,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../../storm/include;../../storm/keyb3;../../editor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../storm/include;../../storm/keyb3;../../editor;%(AdditionalIncludeDirectories);../../blackhc/serializer</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ZLIB_WINAPI;LEGACY_FILES;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;LIGHT_MAX_AMOUNT=5;PROJECT_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -120,6 +121,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BrowseInformation>true</BrowseInformation>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -201,7 +203,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../storm/include;../../storm/keyb3;../../editor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../storm/include;../../storm/keyb3;../../editor;%(AdditionalIncludeDirectories);../../blackhc/serializer</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ZLIB_WINAPI;LEGACY_FILES;WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;LIGHT_MAX_AMOUNT=5;PROJECT_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -214,6 +216,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <BrowseInformation>true</BrowseInformation>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -313,6 +316,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='shadowground no physics|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='shadowground no physics|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessToFile>
     </ClCompile>
     <ClCompile Include="..\camera.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -1317,7 +1321,9 @@
     <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\iowin32.h" />
     <ClInclude Include="..\..\..\zlib1.2.3\contrib\minizip\unzip.h" />
     <ClInclude Include="..\..\blackhc\entityexport.h" />
+    <ClInclude Include="..\..\blackhc\glsceneexport.h" />
     <ClInclude Include="..\..\blackhc\objexport.h" />
+    <ClInclude Include="..\..\blackhc\sgsScene\sgsScene.h" />
     <ClInclude Include="..\..\blackhc\visitor.h" />
     <ClInclude Include="..\file_iterator.h" />
     <ClInclude Include="..\..\util\jpak.h" />
