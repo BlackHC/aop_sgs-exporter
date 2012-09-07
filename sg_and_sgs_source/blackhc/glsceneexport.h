@@ -72,7 +72,12 @@ namespace blackhc {
 			v[1] = w.y;
 			v[2] = w.z;
 		}
-				
+		
+		void setInt2FromVCI2( int *i, const VC2I &v ) {
+			i[0] = v.x;
+			i[1] = v.y;
+		}
+
 		int buildLocalOrder( int x, int y ) {
 			int result = 0;
 			int bit = 1;
@@ -91,6 +96,10 @@ namespace blackhc {
 
 		void visitTerrainTexture( IStorm3D_Texture *texture ) {
 			terrainTextureIds.push_back( exportTexture( texture ) );
+		}
+
+		void visitTerrainBlendingSize( const VC2I &blendSize ) {
+			setInt2FromVCI2( scene.terrain.layerSize, blendSize );
 		}
 
 		void visitTerrainBlending( const std::vector< unsigned char > &weights ) {
@@ -158,8 +167,8 @@ namespace blackhc {
 					setFloat3FromVC3( vertex.position, position );
 					setFloat3FromVC3( vertex.normal, normal );
 
-					vertex.blendUV[0] = xIndex;
-					vertex.blendUV[0] = yIndex;
+					vertex.blendUV[0] = float( xIndex ) / (mapSize.x - 1);
+					vertex.blendUV[1] = float( yIndex ) / (mapSize.y - 1);
 				}
 			}
 

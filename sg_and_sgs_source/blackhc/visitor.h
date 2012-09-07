@@ -20,6 +20,7 @@ struct Visitor {
 	virtual void visitHeightmap( const std::vector<unsigned short> &map, const VC2I &mapSize, const VC3 &realSize ) {}
 	// visit in ascending textureIndex order
 	virtual void visitTerrainTexture( IStorm3D_Texture *texture ) {}
+	virtual void visitTerrainBlendingSize( const VC2I &blendSize ) {}
 	// visit in ascending textureIndex order
 	virtual void visitTerrainBlending( const std::vector< unsigned char > &weights ) {}
 };

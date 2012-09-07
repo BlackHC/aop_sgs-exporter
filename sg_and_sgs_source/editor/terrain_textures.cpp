@@ -835,6 +835,8 @@ struct TerrainTexturesData
 			visitor.visitTerrainTexture( it->second.get() );
 		}
 
+		visitor.visitTerrainBlendingSize( blendMap.getSize() );
+
 		for( auto it = blendMap.blendings.begin() ; it != blendMap.blendings.end() ; ++it ) {
 			visitor.visitTerrainBlending( it->weights );
 		}
@@ -955,7 +957,7 @@ const VC2I &TerrainTextures::getMapSize() const
 
 void TerrainTextures::doExport(Exporter &exporter) const
 {
-	ExporterScene &scene = exporter.getScene();
+	ExporterScene &scene = exporter.getScene(); 
 
 	for(TerrainTexturesData::TextureContainer::iterator it = data->textures.begin(); it != data->textures.end(); ++it)
 		scene.addTexture(it->first);
