@@ -392,7 +392,7 @@ namespace {
 
 		void visitGameObjects( Visitor & visitor ) 
 		{
-			visitor.heightmap( heightMap, mapSize, realSize );
+			visitor.visitHeightmap( heightMap, mapSize, realSize );
 		}
 	};
 

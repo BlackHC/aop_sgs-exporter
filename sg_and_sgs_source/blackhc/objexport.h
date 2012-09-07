@@ -81,15 +81,15 @@ namespace blackhc {
 				_.exportModel( model );
 			}
 
-			void heightmap( const std::vector<unsigned short> heightmap, const VC2I &mapSize, const VC3 &realSize ) {
+			void visitHeightmap( const std::vector<unsigned short> heightmap, const VC2I &mapSize, const VC3 &realSize ) {
 				_.exportTerrain( heightmap, mapSize, realSize );
 			}
 
-			void colormap( const std::vector<unsigned char> rgbData, VC2I size ) {
+			void visitColormap( const std::vector<unsigned char> rgbData, VC2I size ) {
 				_.exportColormap( rgbData, size );
 			}
 
-			bool needColormap() { return true; }
+			bool visitNeedColormap() { return true; }
 		};
 
 		ObjExporter( const std::string &filepath ) : index( 0 ) {
@@ -199,7 +199,7 @@ namespace blackhc {
 			out << "#\tnew object " << modelObject.GetName() << "\n";
 
 			out << "g " << "object_" << index++ << "\n";
- 			
+			
 			TextureType textureType = getDiffuseTextureType( mesh );
 			std::string diffuseTextureFilename = getDiffuseTextureFilename( mesh, textureType );			
 			if( textureType != TT_NONE ) {

@@ -1811,7 +1811,7 @@ void TerrainObjects::visitGameObjects( Visitor & visitor )
 			continue;
 		}
 
-		visitor.terrainObjectName( it->first );
+		visitor.visitTerrainObjectName( it->first );
 		visitor.visitObjectModel( *tm.model );
 
 		for( int i = 0 ; i < tm.objects.size() ; i++ ) {

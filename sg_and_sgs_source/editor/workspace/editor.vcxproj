@@ -108,7 +108,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../../storm/include;../../storm/keyb3;../../editor;%(AdditionalIncludeDirectories);../../blackhc/serializer</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../storm/include;../../storm/keyb3;../../editor;%(AdditionalIncludeDirectories);../../blackhc/serializer;../../blackhc/wml</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ZLIB_WINAPI;LEGACY_FILES;WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;LIGHT_MAX_AMOUNT=5;PROJECT_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -203,7 +203,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../storm/include;../../storm/keyb3;../../editor;%(AdditionalIncludeDirectories);../../blackhc/serializer</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../storm/include;../../storm/keyb3;../../editor;%(AdditionalIncludeDirectories);../../blackhc/serializer;../../blackhc/wml</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ZLIB_WINAPI;LEGACY_FILES;WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;LIGHT_MAX_AMOUNT=5;PROJECT_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>

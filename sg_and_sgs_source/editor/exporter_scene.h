@@ -34,7 +34,7 @@ public:
 	ExporterScene();
 	~ExporterScene();
 
-	void setHeightmap(const std::vector<unsigned short> &heightMap, const VC2I &mapSize, const VC3 &realSizet);
+	void setHeightmap(const std::vector<unsigned short> &heightMap, const VC2I &mapSize, const VC3 &realSize);
 	void setObstaclemap(const std::vector<unsigned short> &obstacleMap);
 	void setTextureRepeat(int value);
 	void setAmbient(const TColor<unsigned char> &color);

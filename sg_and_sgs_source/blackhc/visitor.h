@@ -9,10 +9,10 @@ struct Visitor {
 	// base model
 	virtual void visitObjectModel( IStorm3D_Model &model ) {}
 
-	virtual void heightmap( const std::vector<unsigned short> map, const VC2I &mapSize, const VC3 &realSize ) {}
-	virtual void colormap( const std::vector<unsigned char> rgbData, VC2I size ) {}
+	virtual void visitHeightmap( const std::vector<unsigned short> &map, const VC2I &mapSize, const VC3 &realSize ) {}
+	virtual void visitColormap( const std::vector<unsigned char> &rgbData, VC2I size ) {}
 
-	virtual void terrainObjectName( const std::string &name ) {}
+	virtual void visitTerrainObjectName( const std::string &name ) {}
 
-	virtual bool needColormap() { return false; }
+	virtual bool visitNeedColormap() { return false; }
 };

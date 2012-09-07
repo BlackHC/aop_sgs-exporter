@@ -302,7 +302,7 @@ filesystem::InputStream &TerrainColorMap::readStream(filesystem::InputStream &st
 
 void TerrainColorMap::visitGameObjects( Visitor & visitor )
 {
-	if( visitor.needColormap() ) {
+	if( visitor.visitNeedColormap() ) {
 		create();
 		vector< unsigned char > buffer( data->values.size() );
 
@@ -312,7 +312,7 @@ void TerrainColorMap::visitGameObjects( Visitor & visitor )
 			buffer.push_back(it->color.b);
 		}
 
-		visitor.colormap( buffer, data->size );
+		visitor.visitColormap( buffer, data->size );
 	}
 }
 

@@ -18,7 +18,8 @@
 #include "gl/GL.h"
 
 #pragma once
-
+#undef min
+#undef max
 #include "serializer/serializer.h"
 #include "serializer/serializer_std.h"
 
@@ -50,14 +51,123 @@ namespace blackhc {
 			exportModel( model );
 		}
 
-		void terrainObjectName( const std::string &name ) { exportModelType( name ); }
+		void visitHeightmap( const std::vector<unsigned short> &map, const VC2I &mapSize, const VC3 &realSize ) {
+			exportTerrainHeightmap( map, mapSize, realSize );
+		}
 
-		bool needColormap() { return false; }
+		void visitTerrainObjectName( const std::string &name ) { exportModelType( name ); }
+
+		bool visitNeedColormap() { return false; }
 
 		void setColor3ubFromCOL( SGSScene::Color3ub &color3ub, const COL &col ) {
 			color3ub.r = col.r * 255;
 			color3ub.g = col.g * 255;
 			color3ub.b = col.b * 255;
+		}
+
+		void setFloat3FromVC3( float *v, const VC3 &w ) {
+			v[0] = w.x;
+			v[1] = w.y;
+			v[2] = w.z;
+		}
+				
+		int buildLocalOrder( int x, int y ) {
+			int result = 0;
+			int bit = 1;
+			int targetBitX = 1;
+			int targetBitY = 2;
+			for( int i = 0 ; i < 16 ; ++i, bit <<= 1, targetBitX <<= 2, targetBitY <<= 2 ) {
+				if( x & bit ) {
+					result |= targetBitX;
+				}
+				if( y & bit ) {
+					result |= targetBitY;
+				}
+			}
+			return result;
+		} 
+
+		void exportTerrainHeightmap( const std::vector<unsigned short> &heightmap, const VC2I &mapSize, const VC3 &realSize ) {
+			scene.terrain.mapSize[0] = mapSize.x;
+			scene.terrain.mapSize[1] = mapSize.y;
+
+			float realMapSize[3];
+
+			realMapSize[0] = realSize.x;
+			realMapSize[1] = realSize.y;
+			realMapSize[2] = realSize.z;
+
+			float scale[3] = { realSize.x / (mapSize.x - 1), realSize.y / 65535.f, realSize.z / (mapSize.y - 1) };
+			float origin[3] = { realSize.x / 2, 0, realSize.z / 2 };
+
+			int numVertices = mapSize.x * mapSize.y;
+			int numIndices = (mapSize.x - 1) * (mapSize.y - 1) * 2 * 3;
+
+#define getIndex( xIndex, yIndex ) ((yIndex) * mapSize.x + (xIndex))
+#define getHeight( xIndex, yIndex ) heightmap[ getIndex( xIndex, yIndex ) ]
+#define getPosition( xIndex, yIndex ) \
+			VC3( (xIndex) * scale[0] - origin[0], getHeight( xIndex, yIndex ) * scale[1] - origin[1], (yIndex) * scale[2] - origin[2] )
+#define getNormal( a, b, c ) ( (b) - (a) ).GetCrossWith( (c) - (a) )
+
+			scene.terrain.vertices.resize( numVertices );
+			scene.terrain.indices.resize( numIndices );
+
+			for( int yIndex = 0 ; yIndex < mapSize.y ; yIndex++ ) {
+				for( int xIndex = 0 ; xIndex < mapSize.x ; xIndex++ ) {
+					VC3 position = getPosition( xIndex, yIndex );
+					VC3 normal;
+
+					if( xIndex > 0 && xIndex < mapSize.x - 1 && yIndex > 0 && yIndex < mapSize.y - 1 ) {
+						static int neighborXOffset[] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+						static int neighborYOffset[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+
+						VC3 lastNeighbor = getPosition( xIndex + neighborXOffset[7], yIndex + neighborYOffset[7] );
+						for( int i = 0 ; i < 8 ; i++ ) {
+							VC3 currentNeighbor = getPosition( xIndex + neighborXOffset[i], yIndex + neighborYOffset[i] );
+							normal += getNormal( lastNeighbor, position, currentNeighbor );
+							lastNeighbor = currentNeighbor;
+						}
+
+						if( normal.GetSquareLength() > 0.0001f ) {
+							normal.Normalize();
+						}
+					}
+					else {
+						normal.x = 0.0f;
+						normal.y = 1.0f;
+						normal.z = 0.0f;
+					}
+
+					auto &vertex = scene.terrain.vertices[ getIndex( xIndex, yIndex ) ];
+					setFloat3FromVC3( vertex.position, position );
+					setFloat3FromVC3( vertex.normal, normal );
+
+					vertex.blendUV[0] = xIndex;
+					vertex.blendUV[0] = yIndex;
+				}
+			}
+
+			int index = 0;
+			for( int yIndex = 0 ; yIndex < mapSize.y - 1 ; yIndex++ ) {
+				for( int xIndex = 0 ; xIndex < mapSize.x - 1 ; xIndex++ ) {
+					int base = getIndex( xIndex, yIndex );
+					int right = getIndex( xIndex + 1, yIndex );
+					int down = getIndex( xIndex, yIndex + 1 );
+					int right_down = getIndex( xIndex + 1, yIndex + 1 );
+
+					scene.terrain.indices[ index++ ] = right;
+					scene.terrain.indices[ index++ ] = base;
+					scene.terrain.indices[ index++ ] = down;
+
+					scene.terrain.indices[ index++ ] = right;
+					scene.terrain.indices[ index++ ] = down;
+					scene.terrain.indices[ index++ ] = right_down;
+				}
+			}
+#undef getIndex
+#undef getPosition
+#undef getNormal
+#undef getHeight
 		}
 
 		int exportTexture( IStorm3D_Texture *texture ) {
