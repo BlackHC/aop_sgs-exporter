@@ -21,6 +21,8 @@
 #include <istorm3d_texture.h>
 #include <istorm3d.h>
 
+#include "../blackhc/visitor.h"
+
 namespace frozenbyte {
 namespace editor {
 namespace {
@@ -826,6 +828,17 @@ struct TerrainTexturesData
 		for(; it != textures.end(); ++it)
 			storm.terrain->addTerrainTexture(*it->second.get());
 	}
+
+	void visitGameObjects( Visitor & visitor ) {
+		TextureContainer::const_iterator it = textures.begin();
+		for(; it != textures.end(); ++it) {
+			visitor.visitTerrainTexture( it->second.get() );
+		}
+
+		for( auto it = blendMap.blendings.begin() ; it != blendMap.blendings.end() ; ++it ) {
+			visitor.visitTerrainBlending( it->weights );
+		}
+	}
 };
 
 TerrainTextures::TerrainTextures(Storm &storm)
@@ -962,6 +975,11 @@ filesystem::InputStream &TerrainTextures::readStream(filesystem::InputStream &st
 	data->readStream(stream);
 
 	return stream;
+}
+
+void TerrainTextures::visitGameObjects( Visitor & visitor )
+{
+	data->visitGameObjects( visitor );
 }
 
 } // end of namespace editor

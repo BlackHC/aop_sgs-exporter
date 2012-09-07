@@ -38,6 +38,8 @@ namespace blackhc {
 		SGSScene scene;
 		std::map< std::string, int > textureNameIdMap;
 		std::map< std::string, int > modelNameObjectIdMap;
+		// terrain texture index -> my texture id
+		std::vector< int > terrainTextureIds;
 
 		GLSceneExporter( const std::string &filepath ) {
 			this->filepath = filepath;
@@ -86,6 +88,20 @@ namespace blackhc {
 			}
 			return result;
 		} 
+
+		void visitTerrainTexture( IStorm3D_Texture *texture ) {
+			terrainTextureIds.push_back( exportTexture( texture ) );
+		}
+
+		void visitTerrainBlending( const std::vector< unsigned char > &weights ) {
+			int terrainTextureIndex = scene.terrain.layers.size();
+
+			scene.terrain.layers.push_back( SGSScene::Terrain::Layer() );
+
+			auto &layer = scene.terrain.layers.back();
+			layer.textureIndex = terrainTextureIds[ terrainTextureIndex ];
+			layer.weights = weights;
+		}
 
 		void exportTerrainHeightmap( const std::vector<unsigned short> &heightmap, const VC2I &mapSize, const VC3 &realSize ) {
 			scene.terrain.mapSize[0] = mapSize.x;

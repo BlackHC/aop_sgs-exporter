@@ -393,6 +393,7 @@ namespace {
 		void visitGameObjects( Visitor & visitor ) 
 		{
 			visitor.visitHeightmap( heightMap, mapSize, realSize );
+			terrainTextures.visitGameObjects( visitor );
 		}
 	};
 

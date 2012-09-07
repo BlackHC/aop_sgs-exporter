@@ -20,6 +20,8 @@
 #include <datatypedef.h>
 #endif
 
+struct Visitor;
+
 class IStorm3D_Texture;
 
 namespace frozenbyte {
@@ -74,6 +76,8 @@ public:
 	void doExport(Exporter &exporter) const;
 	filesystem::OutputStream &writeStream(filesystem::OutputStream &stream) const;
 	filesystem::InputStream &readStream(filesystem::InputStream &stream);
+
+	void visitGameObjects( Visitor & visitor );
 };
 
 inline filesystem::OutputStream &operator << (filesystem::OutputStream &stream, const TerrainTextures &textures)

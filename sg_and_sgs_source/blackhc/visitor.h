@@ -2,6 +2,7 @@
 #pragma once
 
 class IStorm3D_Model;
+class IStorm3D_Texture;
 
 struct Visitor {
 	// instance model
@@ -9,10 +10,16 @@ struct Visitor {
 	// base model
 	virtual void visitObjectModel( IStorm3D_Model &model ) {}
 
-	virtual void visitHeightmap( const std::vector<unsigned short> &map, const VC2I &mapSize, const VC3 &realSize ) {}
 	virtual void visitColormap( const std::vector<unsigned char> &rgbData, VC2I size ) {}
 
 	virtual void visitTerrainObjectName( const std::string &name ) {}
 
 	virtual bool visitNeedColormap() { return false; }
+
+	// terrain export
+	virtual void visitHeightmap( const std::vector<unsigned short> &map, const VC2I &mapSize, const VC3 &realSize ) {}
+	// visit in ascending textureIndex order
+	virtual void visitTerrainTexture( IStorm3D_Texture *texture ) {}
+	// visit in ascending textureIndex order
+	virtual void visitTerrainBlending( const std::vector< unsigned char > &weights ) {}
 };
