@@ -266,10 +266,34 @@ namespace blackhc {
 			setColor3ubFromCOL( material.specular, stormSpecular );
 
 			material.alpha = (1.0 - stormMaterial.GetTransparency()) * 255;
-			
-			if( stormMaterial.GetBaseTexture() && stormMaterial.GetBaseTexture()->GetFilename() ) {
 
+			// map the alpha type
+			auto stormAlphaType = stormMaterial.GetAlphaType();
+			switch( stormAlphaType ) {
+			case IStorm3D_Material::ATYPE_USE_ALPHATEST:
+				material.alphaType = SGSScene::Material::AT_ALPHATEST;
+				break;
+			case IStorm3D_Material::ATYPE_MUL2X:
+				material.alphaType = SGSScene::Material::AT_MULTIPLY_2;
+				break;
+			case IStorm3D_Material::ATYPE_MUL:
+				material.alphaType = SGSScene::Material::AT_MULTIPLY;
+				break;
+			case IStorm3D_Material::ATYPE_ADD:
+				material.alphaType = SGSScene::Material::AT_ADDITIVE;
+				break;
+			case IStorm3D_Material::ATYPE_USE_TEXTRANSPARENCY:
+				material.alphaType = SGSScene::Material::AT_TEXTURE;
+				break;
+			case IStorm3D_Material::ATYPE_USE_TRANSPARENCY:
+				material.alphaType = SGSScene::Material::AT_MATERIAL;
+				break;
+			case IStorm3D_Material::ATYPE_NONE:
+			default:
+				material.alphaType = SGSScene::Material::AT_NONE;
+				break;
 			}
+			
 			material.textureIndex[0] = exportTexture( stormMaterial.GetBaseTexture() );
 			material.textureIndex[1] = exportTexture( stormMaterial.GetBaseTexture2() );
 		}
