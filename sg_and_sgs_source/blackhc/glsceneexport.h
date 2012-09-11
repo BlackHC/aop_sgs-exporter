@@ -30,6 +30,10 @@
 namespace blackhc {
 	typedef std::vector<IStorm3D_Model> ModelVector;
 
+	inline int iceil( int a, int b ) {
+		return (a + b - 1) / b;
+	}
+	
 	struct GLSceneExporter : Visitor {
 		std::string filepath;
 
@@ -78,7 +82,8 @@ namespace blackhc {
 			i[1] = v.y;
 		}
 
-		int buildLocalOrder( int x, int y ) {
+		// zOrder: ...yxyxyxyx
+		int zOrderFromXY( int x, int y ) {
 			int result = 0;
 			int bit = 1;
 			int targetBitX = 1;
@@ -92,7 +97,23 @@ namespace blackhc {
 				}
 			}
 			return result;
-		} 
+		}
+
+		VC2I xyFromZOrder( int z ) {
+			VC2I split;
+			int bit = 1;
+			int targetBitX = 1;
+			int targetBitY = 2;
+			for( int i = 0 ; i < 16 ; ++i, bit <<= 1, targetBitX <<= 2, targetBitY <<= 2 ) {
+				if( z & targetBitX ) {
+					split.x |= bit;
+				}
+				if( z & targetBitY ) {
+					split.y |= bit;
+				}
+			}
+			return split;
+		}
 
 		void visitTerrainTexture( IStorm3D_Texture *texture ) {
 			terrainTextureIds.push_back( exportTexture( texture ) );
@@ -133,6 +154,9 @@ namespace blackhc {
 #define getPosition( xIndex, yIndex ) \
 			VC3( (xIndex) * scale[0] - origin[0], getHeight( xIndex, yIndex ) * scale[1] - origin[1], (yIndex) * scale[2] - origin[2] )
 #define getNormal( a, b, c ) ( (b) - (a) ).GetCrossWith( (c) - (a) )
+#define isValid( xIndex, yIndex ) ((xIndex) > 0 && (xIndex) < mapSize.x - 1 && (yIndex) > 0 && (yIndex) < mapSize.y - 1)
+
+#define getTargetPosition( xIndex, yIndex ) ((yIndex) * mapSize.x + (xIndex))
 
 			scene.terrain.vertices.resize( numVertices );
 			scene.terrain.indices.resize( numIndices );
@@ -142,25 +166,33 @@ namespace blackhc {
 					VC3 position = getPosition( xIndex, yIndex );
 					VC3 normal;
 
-					if( xIndex > 0 && xIndex < mapSize.x - 1 && yIndex > 0 && yIndex < mapSize.y - 1 ) {
-						static int neighborXOffset[] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-						static int neighborYOffset[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+					static int neighborXOffset[] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+					static int neighborYOffset[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 
-						VC3 lastNeighbor = getPosition( xIndex + neighborXOffset[7], yIndex + neighborYOffset[7] );
-						for( int i = 0 ; i < 8 ; i++ ) {
-							VC3 currentNeighbor = getPosition( xIndex + neighborXOffset[i], yIndex + neighborYOffset[i] );
-							normal += getNormal( lastNeighbor, position, currentNeighbor );
+					VC3 lastNeighbor;
+					bool lastValid = isValid( xIndex + neighborXOffset[7], yIndex + neighborYOffset[7] );
+					if( lastValid ) {
+						lastNeighbor = getPosition( xIndex + neighborXOffset[7], yIndex + neighborYOffset[7] );
+					}
+
+					for( int i = 0 ; i < 8 ; i++ ) {
+						int neighbor_xIndex = xIndex + neighborXOffset[i];
+						int neighbor_yIndex = yIndex + neighborYOffset[i];
+						if( isValid( neighbor_xIndex, neighbor_yIndex ) ){
+							VC3 currentNeighbor = getPosition( neighbor_xIndex, neighbor_yIndex );
+							if( lastValid ) {
+								normal += getNormal( lastNeighbor, position, currentNeighbor );
+							}
 							lastNeighbor = currentNeighbor;
+							lastValid = true;
 						}
-
-						if( normal.GetSquareLength() > 0.0001f ) {
-							normal.Normalize();
+						else {
+							lastValid = false;
 						}
 					}
-					else {
-						normal.x = 0.0f;
-						normal.y = 1.0f;
-						normal.z = 0.0f;
+
+					if( normal.GetSquareLength() > 0.0001f ) {
+						normal.Normalize();
 					}
 
 					auto &vertex = scene.terrain.vertices[ getIndex( xIndex, yIndex ) ];
@@ -172,27 +204,93 @@ namespace blackhc {
 				}
 			}
 
+
+			int numXTiles = iceil(mapSize.x - 1, SGSScene::Terrain::EDGES_PER_TILE );
+			int numYTiles = iceil(mapSize.y - 1, SGSScene::Terrain::EDGES_PER_TILE );
+			
 			int index = 0;
-			for( int yIndex = 0 ; yIndex < mapSize.y - 1 ; yIndex++ ) {
-				for( int xIndex = 0 ; xIndex < mapSize.x - 1 ; xIndex++ ) {
-					int base = getIndex( xIndex, yIndex );
-					int right = getIndex( xIndex + 1, yIndex );
-					int down = getIndex( xIndex, yIndex + 1 );
-					int right_down = getIndex( xIndex + 1, yIndex + 1 );
 
-					scene.terrain.indices[ index++ ] = right;
-					scene.terrain.indices[ index++ ] = base;
-					scene.terrain.indices[ index++ ] = down;
+			for(int yTileIndex = 0 ; yTileIndex < numYTiles ; yTileIndex++ ) {
+				for(int xTileIndex = 0 ; xTileIndex < numXTiles ; xTileIndex++ ) {
+					const int xOffset = xTileIndex * SGSScene::Terrain::EDGES_PER_TILE;
+					const int yOffset = yTileIndex * SGSScene::Terrain::EDGES_PER_TILE;
+					const int numX = std::min( mapSize.x - xOffset, SGSScene::Terrain::TILE_SIZE);
+					const int numY = std::min( mapSize.y - yOffset, SGSScene::Terrain::TILE_SIZE);
 
-					scene.terrain.indices[ index++ ] = right;
-					scene.terrain.indices[ index++ ] = down;
-					scene.terrain.indices[ index++ ] = right_down;
+					// set the tile information
+					SGSScene::Terrain::Tile tile;
+					tile.startIndex = index;
+					tile.numIndices = (numX - 1) * (numY - 1) * 2 * 3;
+
+					// set the bounding box
+					tile.bounding.box.min[0] = tile.bounding.box.min[1] = tile.bounding.box.min[2] = FLT_MAX;
+					tile.bounding.box.max[0] = tile.bounding.box.max[1] = tile.bounding.box.max[2] = -FLT_MAX; 
+					for( int yIndex = 0 ; yIndex < numY ; yIndex++ ) {
+						for( int xIndex = 0 ; xIndex < numX ; xIndex++ ) {
+							int globalXIndex = xOffset + xIndex;
+							int globalYIndex = yOffset + yIndex;
+							auto vertex = scene.terrain.vertices[ getIndex( globalXIndex, globalYIndex ) ];
+
+							for( int i = 0 ; i < 3 ; ++i ) {
+								tile.bounding.box.min[i] = std::min( tile.bounding.box.min[i], vertex.position[i] );
+							}
+							for( int i = 0 ; i < 3 ; ++i ) {
+								tile.bounding.box.max[i] = std::max( tile.bounding.box.max[i], vertex.position[i] );
+							}
+						}
+					}
+
+					// set the bounding sphere
+					for( int i = 0 ; i < 3 ; ++i ) {
+						tile.bounding.sphere.center[i] = (tile.bounding.box.min[i] + tile.bounding.box.max[i]) * 0.5;
+					}
+					tile.bounding.sphere.radius = 0.0;
+					for( int yIndex = 0 ; yIndex < numY ; yIndex++ ) {
+						for( int xIndex = 0 ; xIndex < numX ; xIndex++ ) {
+							int globalXIndex = xOffset + xIndex;
+							int globalYIndex = yOffset + yIndex;
+							auto vertex = scene.terrain.vertices[ getIndex( globalXIndex, globalYIndex ) ];
+
+							float distance = 0;
+							for( int i = 0 ; i < 3 ; ++i ) {
+								float axisDistance = vertex.position[i] - tile.bounding.sphere.center[i];
+								distance += axisDistance*axisDistance;
+							}
+							distance = sqrt( distance );
+
+							tile.bounding.sphere.radius = std::max( tile.bounding.sphere.radius, distance );
+						}
+					}
+
+					scene.terrain.tiles.push_back( tile );
+					
+					// set the indices
+					for( int yIndex = 0 ; yIndex < numY - 1 ; yIndex++ ) {
+						for( int xIndex = 0 ; xIndex < numX - 1 ; xIndex++ ) {
+							int globalXIndex = xOffset + xIndex;
+							int globalYIndex = yOffset + yIndex;
+
+							int base = getIndex( globalXIndex, globalYIndex );
+							int right = getIndex( globalXIndex + 1, globalYIndex );
+							int down = getIndex( globalXIndex, globalYIndex + 1 );
+							int right_down = getIndex( globalXIndex + 1, globalYIndex + 1 );
+
+							scene.terrain.indices[ index++ ] = right;
+							scene.terrain.indices[ index++ ] = base;
+							scene.terrain.indices[ index++ ] = down;
+
+							scene.terrain.indices[ index++ ] = right;
+							scene.terrain.indices[ index++ ] = down;
+							scene.terrain.indices[ index++ ] = right_down;
+						}
+					}
 				}
 			}
 #undef getIndex
 #undef getPosition
 #undef getNormal
 #undef getHeight
+#undef isValid
 		}
 
 		int exportTexture( IStorm3D_Texture *texture ) {
@@ -315,6 +413,11 @@ namespace blackhc {
 			scene.vertices.reserve( std::max<unsigned>( scene.vertices.capacity(), scene.vertices.size() + numNewVertices * 10 ) );
 		}
 
+		void exportBoundingSphere( SGSScene::BoundingSphere &boundingSphere, const Sphere &sphere ) {
+			setFloat3FromVC3( boundingSphere.center, sphere.position );
+			boundingSphere.radius = sphere.radius;
+		}
+
 		void exportModelObject( IStorm3D_Model &model, IStorm3D_Model_Object &modelObject ) {
 			IStorm3D_Mesh *mesh = modelObject.GetMesh();
 			MAT transformMat = modelObject.GetMXG();
@@ -344,6 +447,11 @@ namespace blackhc {
 			else {
 				setDefaultMaterial( subObject.material );
 			}
+
+			// set bounding sphere
+			VC3 transformedCenter = transformMat.GetTransformedVector( modelObject.GetBoundingSphere().position );
+			setFloat3FromVC3( subObject.boundingSphere.center, transformedCenter );
+			subObject.boundingSphere.radius = modelObject.GetBoundingSphere().radius;
 
 			int firstVertex = scene.vertices.size();
 
