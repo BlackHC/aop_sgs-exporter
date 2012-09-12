@@ -449,9 +449,15 @@ namespace blackhc {
 			}
 
 			// set bounding sphere
-			VC3 transformedCenter = transformMat.GetTransformedVector( modelObject.GetBoundingSphere().position );
-			setFloat3FromVC3( subObject.boundingSphere.center, transformedCenter );
-			subObject.boundingSphere.radius = modelObject.GetBoundingSphere().radius;
+			const auto &stormBoundingSphere = modelObject.GetBoundingSphere();
+			VC3 transformedCenter = transformMat.GetTransformedVector( stormBoundingSphere.position );
+			setFloat3FromVC3( subObject.bounding.sphere.center, transformedCenter );
+			subObject.bounding.sphere.radius = stormBoundingSphere.radius;
+			
+			// set bounding box
+			const auto & stormBoundingBox = modelObject.GetBoundingBox();
+			setFloat3FromVC3( subObject.bounding.box.min, transformMat.GetTransformedVector( stormBoundingBox.mmin ));
+			setFloat3FromVC3( subObject.bounding.box.max, transformMat.GetTransformedVector( stormBoundingBox.mmax ));
 
 			int firstVertex = scene.vertices.size();
 
