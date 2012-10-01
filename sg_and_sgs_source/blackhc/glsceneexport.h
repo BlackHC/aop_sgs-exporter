@@ -42,6 +42,9 @@ namespace blackhc {
 		SGSScene scene;
 		std::map< std::string, int > textureNameIdMap;
 		std::map< std::string, int > modelNameObjectIdMap;
+		// in modelName order
+		std::vector< IStorm3D_Model * > prototypeModels;
+
 		// terrain texture index -> my texture id
 		std::vector< int > terrainTextureIds;
 
@@ -54,36 +57,38 @@ namespace blackhc {
 		}
 
 		void visitObjectInstance( IStorm3D_Model &model ) {
-			exportModel( model );
+			exportObject( model );
 		}
 
 		void visitHeightmap( const std::vector<unsigned short> &map, const VC2I &mapSize, const VC3 &realSize ) {
 			exportTerrainHeightmap( map, mapSize, realSize );
 		}
 
-		void visitTerrainObjectName( const std::string &name ) { exportModelType( name ); }
+		void visitObjectModel( const std::string &name, IStorm3D_Model &model ) {
+			exportModelType( name, model );
+		}
 
 		bool visitNeedColormap() { return false; }
 
-		void setColor3ubFromCOL( SGSScene::Color3ub &color3ub, const COL &col ) {
+		static void setColor3ubFromCOL( SGSScene::Color3ub &color3ub, const COL &col ) {
 			color3ub.r = col.r * 255;
 			color3ub.g = col.g * 255;
 			color3ub.b = col.b * 255;
 		}
 
-		void setFloat3FromVC3( float *v, const VC3 &w ) {
+		static void setFloat3FromVC3( float *v, const VC3 &w ) {
 			v[0] = w.x;
 			v[1] = w.y;
 			v[2] = w.z;
 		}
 		
-		void setInt2FromVCI2( int *i, const VC2I &v ) {
+		static void setInt2FromVCI2( int *i, const VC2I &v ) {
 			i[0] = v.x;
 			i[1] = v.y;
 		}
 
 		// zOrder: ...yxyxyxyx
-		int zOrderFromXY( int x, int y ) {
+		static int zOrderFromXY( int x, int y ) {
 			int result = 0;
 			int bit = 1;
 			int targetBitX = 1;
@@ -99,7 +104,7 @@ namespace blackhc {
 			return result;
 		}
 
-		VC2I xyFromZOrder( int z ) {
+		static VC2I xyFromZOrder( int z ) {
 			VC2I split;
 			int bit = 1;
 			int targetBitX = 1;
@@ -303,6 +308,11 @@ namespace blackhc {
 				return SGSScene::NO_TEXTURE;
 			}
 
+			// embedded avis are not supported
+			if( boost::ends_with( textureFilename, ".avi" ) ) {
+				return SGSScene::NO_TEXTURE;
+			}
+
 			// has the texture already been loaded?
 			auto it = textureNameIdMap.find( textureFilename );
 			if( it != textureNameIdMap.end() ) {
@@ -341,7 +351,7 @@ namespace blackhc {
 			return SGSScene::NO_TEXTURE;
 		}
 
-		void exportModelType( const std::string &name ) {
+		void exportModelType( const std::string &name, IStorm3D_Model &model ) {
 			auto it = modelNameObjectIdMap.find( name );
 			if( it != modelNameObjectIdMap.end() ) {
 				currentModelId = it->second;
@@ -350,6 +360,7 @@ namespace blackhc {
 				currentModelId = scene.modelNames.size();
 
 				scene.modelNames.push_back( name );
+				prototypeModels.push_back( &model );
 			}
 		}
 
@@ -393,14 +404,14 @@ namespace blackhc {
 			}
 			
 			material.textureIndex[0] = exportTexture( stormMaterial.GetBaseTexture() );
-			material.textureIndex[1] = exportTexture( stormMaterial.GetBaseTexture2() );
+			//material.textureIndex[1] = exportTexture( stormMaterial.GetBaseTexture2() );
 		}
 
 		void setDefaultMaterial( SGSScene::Material &material ) {
 			material.doubleSided = false;
 			material.wireFrame = false;
 
-			material.textureIndex[0] = material.textureIndex[1] = SGSScene::NO_TEXTURE; // no texture
+			material.textureIndex[0] = /*material.textureIndex[1] =*/ SGSScene::NO_TEXTURE; // no texture
 
 			material.specularSharpness = 1.0;
 
@@ -459,7 +470,9 @@ namespace blackhc {
 			setFloat3FromVC3( subObject.bounding.box.min, transformMat.GetTransformedVector( stormBoundingBox.mmin ));
 			setFloat3FromVC3( subObject.bounding.box.max, transformMat.GetTransformedVector( stormBoundingBox.mmax ));
 
-			int firstVertex = scene.vertices.size();
+			const int firstVertex = scene.vertices.size();
+			subObject.startVertex = firstVertex;
+			subObject.numVertices = numVertices;
 
 			// output vertices
 			for( int v = 0 ; v < numVertices ; v++ ) {
@@ -479,8 +492,8 @@ namespace blackhc {
 
 				outVertex.uv[0][0] = vertex.texturecoordinates.x;
 				outVertex.uv[0][1] = vertex.texturecoordinates.y;
-				outVertex.uv[1][0] = vertex.texturecoordinates2.x;
-				outVertex.uv[1][1] = vertex.texturecoordinates2.y;
+				/*outVertex.uv[1][0] = vertex.texturecoordinates2.x;
+				outVertex.uv[1][1] = vertex.texturecoordinates2.y;*/
 
 				scene.vertices.push_back( outVertex );
 			}
@@ -498,52 +511,89 @@ namespace blackhc {
 			}
 		}
 
-		void exportModel( IStorm3D_Model &model ) {
+		// exports storModel into model without pushing it into either scene.models or scene.objects
+		void exportModel( SGSScene::Model &model, IStorm3D_Model &stormModel ) {
 			Iterator<IStorm3D_Model_Object *> *objectIterator;
 
-			scene.objects.push_back( SGSScene::Object() );
-			SGSScene::Object &object = scene.objects.back();
+			//model.modelId = currentModelId;
 
-			object.modelId = currentModelId;
-			
-			object.startSubObject = scene.subObjects.size();
+			model.startSubObject = scene.subObjects.size();
+			model.numSubObjects = 0;
 
-			for(objectIterator = model.ITObject->Begin(); !objectIterator->IsEnd(); objectIterator->Next() ) {
-				IStorm3D_Model_Object &modelObject = *objectIterator->GetCurrent();
+			// set bounding box
+			const auto & stormBoundingBox = stormModel.GetBoundingBox();
+			setFloat3FromVC3( model.boundingBox.min, stormBoundingBox.mmin );
+			setFloat3FromVC3( model.boundingBox.max, stormBoundingBox.mmax );
+
+			for(objectIterator = stormModel.ITObject->Begin(); !objectIterator->IsEnd(); objectIterator->Next() ) {
+				IStorm3D_Model_Object &stormModelObject = *objectIterator->GetCurrent();
 
 				// ignore editor only objects
-				std::string name = modelObject.GetName();
+				std::string name = stormModelObject.GetName();
 				if( name.find( "EditorOnly" ) != name.npos ) {
 					continue;
 				}
-				if (modelObject.GetName() != NULL)
+				if (stormModelObject.GetName() != NULL)
 				{
-					int slen = strlen(modelObject.GetName());
+					int slen = strlen(stormModelObject.GetName());
 					if (slen >= 9)
 					{
-						if (strcmp(&modelObject.GetName()[slen - 9], "Collision") == 0)
+						if (strcmp(&stormModelObject.GetName()[slen - 9], "Collision") == 0)
 						{
 							continue;
 						}
 					}
-					if (strcmp(modelObject.GetName(), "effect_layer") == 0)
+					if (strcmp(stormModelObject.GetName(), "effect_layer") == 0)
 					{
 						continue;
 					}
-					if (strcmp(modelObject.GetName(), "effect_2nd_layer") == 0)
+					if (strcmp(stormModelObject.GetName(), "effect_2nd_layer") == 0)
 					{
 						continue;
 					}
 				}
 
-				exportModelObject( model, modelObject );
-				++object.numSubObjects;
+				exportModelObject( stormModel, stormModelObject );
+				++model.numSubObjects;
 			}
 
 			delete objectIterator;
 		}
 
+		void exportObject( IStorm3D_Model &stormModel ) {
+			scene.objects.push_back( SGSScene::Object() );
+			SGSScene::Object &object = scene.objects.back();
+
+			object.modelId = currentModelId;
+			exportModel( object, stormModel );
+
+			MAT &transformation = stormModel.GetMX();
+			memcpy( object.transformation, (float*) &transformation, sizeof object.transformation ); 
+		}
+
+		void exportPrototype( IStorm3D_Model &stormModel ) {
+			scene.models.push_back( SGSScene::Model() );
+			SGSScene::Model &model = scene.models.back();
+			
+			exportModel( model, stormModel );
+		}
+
+		void exportPrototypes() {
+			for( int index = 0 ; index < prototypeModels.size() ; index++ ) {
+				exportPrototype( *prototypeModels[ index ] );
+			}
+		}
+
 		void save() {
+			scene.numSceneVertices = scene.vertices.size();
+			scene.numSceneIndices = scene.indices.size();
+			scene.numSceneSubObjects = scene.subObjects.size();
+			scene.numSceneObjects = scene.objects.size();
+
+			// we're done with the whole scene, now export all prototype objects
+			exportPrototypes();
+
+			// now we're done with everything and can save the scene
 			Serializer::BinaryWriter writer( filepath.c_str() );
 
 			Serializer::write( writer, scene );

@@ -1812,7 +1812,7 @@ void TerrainObjects::visitGameObjects( Visitor & visitor )
 		}
 
 		visitor.visitTerrainObjectName( it->first );
-		visitor.visitObjectModel( *tm.model );
+		visitor.visitObjectModel( it->first, *tm.model );
 
 		for( int i = 0 ; i < tm.objects.size() ; i++ ) {
 			const Object &object = tm.objects[i];

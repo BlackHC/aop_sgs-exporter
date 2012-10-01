@@ -801,7 +801,7 @@ void TerrainBuildings::visitGameObjects( Visitor & visitor )
 			continue;
 		}
 
-		visitor.visitObjectModel( *terrainBuilding.model );
+		visitor.visitObjectModel( it->first, *terrainBuilding.model );
 		
 		for(unsigned int i = 0; i < terrainBuilding.instances.size(); ++i)
 		{
