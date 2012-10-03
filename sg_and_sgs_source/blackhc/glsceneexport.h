@@ -254,7 +254,7 @@ namespace blackhc {
 						for( int xIndex = 0 ; xIndex < numX ; xIndex++ ) {
 							int globalXIndex = xOffset + xIndex;
 							int globalYIndex = yOffset + yIndex;
-							auto vertex = scene.terrain.vertices[ getIndex( globalXIndex, globalYIndex ) ];
+							const auto &vertex = scene.terrain.vertices[ getIndex( globalXIndex, globalYIndex ) ];
 
 							float distance = 0;
 							for( int i = 0 ; i < 3 ; ++i ) {
@@ -459,20 +459,13 @@ namespace blackhc {
 				setDefaultMaterial( subObject.material );
 			}
 
-			// set bounding sphere
-			const auto &stormBoundingSphere = modelObject.GetBoundingSphere();
-			VC3 transformedCenter = transformMat.GetTransformedVector( stormBoundingSphere.position );
-			setFloat3FromVC3( subObject.bounding.sphere.center, transformedCenter );
-			subObject.bounding.sphere.radius = stormBoundingSphere.radius;
-			
-			// set bounding box
-			const auto & stormBoundingBox = modelObject.GetBoundingBox();
-			setFloat3FromVC3( subObject.bounding.box.min, transformMat.GetTransformedVector( stormBoundingBox.mmin ));
-			setFloat3FromVC3( subObject.bounding.box.max, transformMat.GetTransformedVector( stormBoundingBox.mmax ));
-
 			const int firstVertex = scene.vertices.size();
 			subObject.startVertex = firstVertex;
 			subObject.numVertices = numVertices;
+			
+			// reset the bounding box
+			subObject.bounding.box.min[0] = subObject.bounding.box.min[1] = subObject.bounding.box.min[2] = FLT_MAX;
+			subObject.bounding.box.max[0] = subObject.bounding.box.max[1] = subObject.bounding.box.max[2] = -FLT_MAX; 
 
 			// output vertices
 			for( int v = 0 ; v < numVertices ; v++ ) {
@@ -486,6 +479,13 @@ namespace blackhc {
 				outVertex.position[1] = transformedPosition.y;
 				outVertex.position[2] = transformedPosition.z;
 
+				for( int i = 0 ; i < 3 ; ++i ) {
+					subObject.bounding.box.min[i] = std::min( subObject.bounding.box.min[i], outVertex.position[i] );
+				}
+				for( int i = 0 ; i < 3 ; ++i ) {
+					subObject.bounding.box.max[i] = std::max( subObject.bounding.box.max[i], outVertex.position[i] );
+				}
+
 				outVertex.normal[0] = transformedNormal.x;
 				outVertex.normal[1] = transformedNormal.y;
 				outVertex.normal[2] = transformedNormal.z;
@@ -496,6 +496,38 @@ namespace blackhc {
 				outVertex.uv[1][1] = vertex.texturecoordinates2.y;*/
 
 				scene.vertices.push_back( outVertex );
+			}
+
+			// storm's bounding boxes and spheres are weird, so Im going to calculate my own
+#if 0
+			// set bounding sphere
+			const auto &stormBoundingSphere = modelObject.GetBoundingSphere();
+			VC3 transformedCenter = transformMat.GetTransformedVector( stormBoundingSphere.position );
+			setFloat3FromVC3( subObject.bounding.sphere.center, transformedCenter );
+			subObject.bounding.sphere.radius = stormBoundingSphere.radius;
+
+			// set bounding box
+			const auto & stormBoundingBox = modelObject.GetBoundingBox();
+			setFloat3FromVC3( subObject.bounding.box.min, transformMat.GetTransformedVector( stormBoundingBox.mmin ));
+			setFloat3FromVC3( subObject.bounding.box.max, transformMat.GetTransformedVector( stormBoundingBox.mmax ));
+#endif
+	
+			// set the bounding sphere
+			for( int i = 0 ; i < 3 ; ++i ) {
+				subObject.bounding.sphere.center[i] = (subObject.bounding.box.min[i] + subObject.bounding.box.max[i]) * 0.5;
+			}
+			subObject.bounding.sphere.radius = 0.0;
+			for( int v = 0 ; v < numVertices ; v++ ) {
+				const auto &vertex = scene.vertices[ firstVertex + v ];
+
+				float distance = 0;
+				for( int i = 0 ; i < 3 ; ++i ) {
+					float axisDistance = vertex.position[i] - subObject.bounding.sphere.center[i];
+					distance += axisDistance*axisDistance;
+				}
+				distance = sqrt( distance );
+
+				subObject.bounding.sphere.radius = std::max( subObject.bounding.sphere.radius, distance );
 			}
 
 			subObject.startIndex = scene.indices.size();
@@ -519,11 +551,6 @@ namespace blackhc {
 
 			model.startSubObject = scene.subObjects.size();
 			model.numSubObjects = 0;
-
-			// set bounding box
-			const auto & stormBoundingBox = stormModel.GetBoundingBox();
-			setFloat3FromVC3( model.boundingBox.min, stormBoundingBox.mmin );
-			setFloat3FromVC3( model.boundingBox.max, stormBoundingBox.mmax );
 
 			for(objectIterator = stormModel.ITObject->Begin(); !objectIterator->IsEnd(); objectIterator->Next() ) {
 				IStorm3D_Model_Object &stormModelObject = *objectIterator->GetCurrent();
@@ -557,6 +584,26 @@ namespace blackhc {
 				++model.numSubObjects;
 			}
 
+			// storm's bounding boxes are weird, so I'm calculating my own
+#if 0
+			// set bounding box
+			const auto & stormBoundingBox = stormModel.GetBoundingBox();
+			setFloat3FromVC3( model.boundingBox.min, stormBoundingBox.mmin );
+			setFloat3FromVC3( model.boundingBox.max, stormBoundingBox.mmax );
+#else
+			model.boundingBox.min[0] = model.boundingBox.min[1] = model.boundingBox.min[2] = FLT_MAX;
+			model.boundingBox.max[0] = model.boundingBox.max[1] = model.boundingBox.max[2] = -FLT_MAX; 
+			for( int v = 0 ; v < model.numSubObjects ; v++ ) {
+				const auto &subObject = scene.subObjects[ model.startSubObject + v ];
+
+				for( int i = 0 ; i < 3 ; ++i ) {
+					model.boundingBox.min[i] = std::min( model.boundingBox.min[i], subObject.bounding.box.min[i] );
+				}
+				for( int i = 0 ; i < 3 ; ++i ) {
+					model.boundingBox.max[i] = std::max( model.boundingBox.max[i], subObject.bounding.box.max[i] );
+				}
+			}
+#endif
 			delete objectIterator;
 		}
 
