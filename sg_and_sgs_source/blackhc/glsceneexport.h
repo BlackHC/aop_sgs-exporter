@@ -588,22 +588,39 @@ namespace blackhc {
 #if 0
 			// set bounding box
 			const auto & stormBoundingBox = stormModel.GetBoundingBox();
-			setFloat3FromVC3( model.boundingBox.min, stormBoundingBox.mmin );
-			setFloat3FromVC3( model.boundingBox.max, stormBoundingBox.mmax );
+			setFloat3FromVC3( model.bounding.box.min, stormBoundingBox.mmin );
+			setFloat3FromVC3( model.bounding.box.max, stormBoundingBox.mmax );
 #else
-			model.boundingBox.min[0] = model.boundingBox.min[1] = model.boundingBox.min[2] = FLT_MAX;
-			model.boundingBox.max[0] = model.boundingBox.max[1] = model.boundingBox.max[2] = -FLT_MAX; 
+			model.bounding.box.min[0] = model.bounding.box.min[1] = model.bounding.box.min[2] = FLT_MAX;
+			model.bounding.box.max[0] = model.bounding.box.max[1] = model.bounding.box.max[2] = -FLT_MAX; 
 			for( int v = 0 ; v < model.numSubObjects ; v++ ) {
 				const auto &subObject = scene.subObjects[ model.startSubObject + v ];
 
 				for( int i = 0 ; i < 3 ; ++i ) {
-					model.boundingBox.min[i] = std::min( model.boundingBox.min[i], subObject.bounding.box.min[i] );
+					model.bounding.box.min[i] = std::min( model.bounding.box.min[i], subObject.bounding.box.min[i] );
 				}
 				for( int i = 0 ; i < 3 ; ++i ) {
-					model.boundingBox.max[i] = std::max( model.boundingBox.max[i], subObject.bounding.box.max[i] );
+					model.bounding.box.max[i] = std::max( model.bounding.box.max[i], subObject.bounding.box.max[i] );
 				}
 			}
 #endif
+			// set the bounding sphere
+			for( int i = 0 ; i < 3 ; ++i ) {
+				model.bounding.sphere.center[i] = (model.bounding.box.min[i] + model.bounding.box.max[i]) * 0.5;
+			}
+			model.bounding.sphere.radius = 0.0;
+			for( int v = 0 ; v < model.numSubObjects ; v++ ) {
+				const auto &subObject = scene.subObjects[ model.startSubObject + v ];
+
+				float centerDistance = 0.0;
+				for( int i = 0 ; i < 3 ; ++i ) {
+					const float axisDistance = subObject.bounding.sphere.center[i] - model.bounding.sphere.center[i];
+					centerDistance += axisDistance * axisDistance;
+				}
+				centerDistance = sqrt( centerDistance );
+				model.bounding.sphere.radius = std::max( model.bounding.sphere.radius, centerDistance + subObject.bounding.sphere.radius );
+			}
+
 			delete objectIterator;
 		}
 
