@@ -584,41 +584,54 @@ namespace blackhc {
 				++model.numSubObjects;
 			}
 
-			// storm's bounding boxes are weird, so I'm calculating my own
+			if( model.numSubObjects > 0 ) {
+				// storm's bounding boxes are weird, so I'm calculating my own
 #if 0
-			// set bounding box
-			const auto & stormBoundingBox = stormModel.GetBoundingBox();
-			setFloat3FromVC3( model.bounding.box.min, stormBoundingBox.mmin );
-			setFloat3FromVC3( model.bounding.box.max, stormBoundingBox.mmax );
+				// set bounding box
+				const auto & stormBoundingBox = stormModel.GetBoundingBox();
+				setFloat3FromVC3( model.bounding.box.min, stormBoundingBox.mmin );
+				setFloat3FromVC3( model.bounding.box.max, stormBoundingBox.mmax );
 #else
-			model.bounding.box.min[0] = model.bounding.box.min[1] = model.bounding.box.min[2] = FLT_MAX;
-			model.bounding.box.max[0] = model.bounding.box.max[1] = model.bounding.box.max[2] = -FLT_MAX; 
-			for( int v = 0 ; v < model.numSubObjects ; v++ ) {
-				const auto &subObject = scene.subObjects[ model.startSubObject + v ];
+				model.bounding.box.min[0] = model.bounding.box.min[1] = model.bounding.box.min[2] = FLT_MAX;
+				model.bounding.box.max[0] = model.bounding.box.max[1] = model.bounding.box.max[2] = -FLT_MAX; 
+				for( int v = 0 ; v < model.numSubObjects ; v++ ) {
+					const auto &subObject = scene.subObjects[ model.startSubObject + v ];
 
-				for( int i = 0 ; i < 3 ; ++i ) {
-					model.bounding.box.min[i] = std::min( model.bounding.box.min[i], subObject.bounding.box.min[i] );
+					for( int i = 0 ; i < 3 ; ++i ) {
+						model.bounding.box.min[i] = std::min( model.bounding.box.min[i], subObject.bounding.box.min[i] );
+					}
+					for( int i = 0 ; i < 3 ; ++i ) {
+						model.bounding.box.max[i] = std::max( model.bounding.box.max[i], subObject.bounding.box.max[i] );
+					}
 				}
-				for( int i = 0 ; i < 3 ; ++i ) {
-					model.bounding.box.max[i] = std::max( model.bounding.box.max[i], subObject.bounding.box.max[i] );
-				}
-			}
 #endif
-			// set the bounding sphere
-			for( int i = 0 ; i < 3 ; ++i ) {
-				model.bounding.sphere.center[i] = (model.bounding.box.min[i] + model.bounding.box.max[i]) * 0.5;
-			}
-			model.bounding.sphere.radius = 0.0;
-			for( int v = 0 ; v < model.numSubObjects ; v++ ) {
-				const auto &subObject = scene.subObjects[ model.startSubObject + v ];
-
-				float centerDistance = 0.0;
+				// set the bounding sphere
 				for( int i = 0 ; i < 3 ; ++i ) {
-					const float axisDistance = subObject.bounding.sphere.center[i] - model.bounding.sphere.center[i];
-					centerDistance += axisDistance * axisDistance;
+					model.bounding.sphere.center[i] = (model.bounding.box.min[i] + model.bounding.box.max[i]) * 0.5;
 				}
-				centerDistance = sqrt( centerDistance );
-				model.bounding.sphere.radius = std::max( model.bounding.sphere.radius, centerDistance + subObject.bounding.sphere.radius );
+				model.bounding.sphere.radius = 0.0;
+				for( int v = 0 ; v < model.numSubObjects ; v++ ) {
+					const auto &subObject = scene.subObjects[ model.startSubObject + v ];
+
+					float centerDistance = 0.0;
+					for( int i = 0 ; i < 3 ; ++i ) {
+						const float axisDistance = subObject.bounding.sphere.center[i] - model.bounding.sphere.center[i];
+						centerDistance += axisDistance * axisDistance;
+					}
+					centerDistance = sqrt( centerDistance );
+					model.bounding.sphere.radius = std::max( model.bounding.sphere.radius, centerDistance + subObject.bounding.sphere.radius );
+				}
+			}
+			else {
+				// set a null bounding box at the transformation position
+				const MAT &transformation = stormModel.GetMX();
+				const VC3 translation = transformation.GetTranslation();
+
+				setFloat3FromVC3( model.bounding.box.min, translation );
+				setFloat3FromVC3( model.bounding.box.max, translation );
+
+				setFloat3FromVC3( model.bounding.sphere.center, translation );
+				model.bounding.sphere.radius = 0.0f;
 			}
 
 			delete objectIterator;
