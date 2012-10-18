@@ -642,7 +642,7 @@ namespace blackhc {
 			SGSScene::Object &object = scene.objects.back();
 
 			object.modelId = currentModelId;
-			exportModel( object, stormModel );
+			//exportModel( object, stormModel );
 
 			MAT &transformation = stormModel.GetMX();
 			memcpy( object.transformation, (float*) &transformation, sizeof object.transformation ); 
@@ -662,11 +662,6 @@ namespace blackhc {
 		}
 
 		void save() {
-			scene.numSceneVertices = scene.vertices.size();
-			scene.numSceneIndices = scene.indices.size();
-			scene.numSceneSubObjects = scene.subObjects.size();
-			scene.numSceneObjects = scene.objects.size();
-
 			// we're done with the whole scene, now export all prototype objects
 			exportPrototypes();
 
