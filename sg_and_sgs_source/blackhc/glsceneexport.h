@@ -33,7 +33,7 @@ namespace blackhc {
 	inline int iceil( int a, int b ) {
 		return (a + b - 1) / b;
 	}
-	
+
 	struct GLSceneExporter : Visitor {
 		std::string filepath;
 
@@ -81,7 +81,7 @@ namespace blackhc {
 			v[1] = w.y;
 			v[2] = w.z;
 		}
-		
+
 		static void setInt2FromVCI2( int *i, const VC2I &v ) {
 			i[0] = v.x;
 			i[1] = v.y;
@@ -171,8 +171,8 @@ namespace blackhc {
 					VC3 position = getPosition( xIndex, yIndex );
 					VC3 normal;
 
-					static int neighborXOffset[] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-					static int neighborYOffset[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+					static int neighborXOffset[] = { 0, -1, -1, -1,  0,  1, 1, 1 };
+					static int neighborYOffset[] = { 1,  1,  0, -1, -1, -1, 0, 1 };
 
 					VC3 lastNeighbor;
 					bool lastValid = isValid( xIndex + neighborXOffset[7], yIndex + neighborYOffset[7] );
@@ -212,7 +212,7 @@ namespace blackhc {
 
 			int numXTiles = iceil(mapSize.x - 1, SGSScene::Terrain::EDGES_PER_TILE );
 			int numYTiles = iceil(mapSize.y - 1, SGSScene::Terrain::EDGES_PER_TILE );
-			
+
 			int index = 0;
 
 			for(int yTileIndex = 0 ; yTileIndex < numYTiles ; yTileIndex++ ) {
@@ -229,7 +229,7 @@ namespace blackhc {
 
 					// set the bounding box
 					tile.bounding.box.min[0] = tile.bounding.box.min[1] = tile.bounding.box.min[2] = FLT_MAX;
-					tile.bounding.box.max[0] = tile.bounding.box.max[1] = tile.bounding.box.max[2] = -FLT_MAX; 
+					tile.bounding.box.max[0] = tile.bounding.box.max[1] = tile.bounding.box.max[2] = -FLT_MAX;
 					for( int yIndex = 0 ; yIndex < numY ; yIndex++ ) {
 						for( int xIndex = 0 ; xIndex < numX ; xIndex++ ) {
 							int globalXIndex = xOffset + xIndex;
@@ -268,7 +268,7 @@ namespace blackhc {
 					}
 
 					scene.terrain.tiles.push_back( tile );
-					
+
 					// set the indices
 					for( int yIndex = 0 ; yIndex < numY - 1 ; yIndex++ ) {
 						for( int xIndex = 0 ; xIndex < numX - 1 ; xIndex++ ) {
@@ -324,7 +324,7 @@ namespace blackhc {
 				FILE *textureFile = fopen( textureFilename.c_str(), "rb" );
 
 				if( textureFile ) {
-					int textureIndex = scene.textures.size();						
+					int textureIndex = scene.textures.size();
 
 					scene.textures.push_back( SGSScene::Texture() );
 
@@ -402,7 +402,7 @@ namespace blackhc {
 				material.alphaType = SGSScene::Material::AT_NONE;
 				break;
 			}
-			
+
 			material.textureIndex[0] = exportTexture( stormMaterial.GetBaseTexture() );
 			//material.textureIndex[1] = exportTexture( stormMaterial.GetBaseTexture2() );
 		}
@@ -416,7 +416,7 @@ namespace blackhc {
 			material.specularSharpness = 1.0;
 
 			material.diffuse.r = material.diffuse.g = material.diffuse.b = 255;
-			material.specular.r = material.specular.g = material.specular.b = 255;			
+			material.specular.r = material.specular.g = material.specular.b = 255;
 		}
 
 		void ensureCapacity( int numNewVertices, int numNewIndices ) {
@@ -448,11 +448,11 @@ namespace blackhc {
 
 			scene.subObjects.push_back( SGSScene::SubObject() );
 			SGSScene::SubObject &subObject = scene.subObjects.back();
-			
+
 			subObject.subModelName = modelObject.GetName();
-			
+
 			IStorm3D_Material *material = mesh->GetMaterial();
-			if( material ) {				
+			if( material ) {
 				exportMaterial( subObject.material, *material );
 			}
 			else {
@@ -462,10 +462,10 @@ namespace blackhc {
 			const int firstVertex = scene.vertices.size();
 			subObject.startVertex = firstVertex;
 			subObject.numVertices = numVertices;
-			
+
 			// reset the bounding box
 			subObject.bounding.box.min[0] = subObject.bounding.box.min[1] = subObject.bounding.box.min[2] = FLT_MAX;
-			subObject.bounding.box.max[0] = subObject.bounding.box.max[1] = subObject.bounding.box.max[2] = -FLT_MAX; 
+			subObject.bounding.box.max[0] = subObject.bounding.box.max[1] = subObject.bounding.box.max[2] = -FLT_MAX;
 
 			// output vertices
 			for( int v = 0 ; v < numVertices ; v++ ) {
@@ -511,7 +511,7 @@ namespace blackhc {
 			setFloat3FromVC3( subObject.bounding.box.min, transformMat.GetTransformedVector( stormBoundingBox.mmin ));
 			setFloat3FromVC3( subObject.bounding.box.max, transformMat.GetTransformedVector( stormBoundingBox.mmax ));
 #endif
-	
+
 			// set the bounding sphere
 			for( int i = 0 ; i < 3 ; ++i ) {
 				subObject.bounding.sphere.center[i] = (subObject.bounding.box.min[i] + subObject.bounding.box.max[i]) * 0.5;
@@ -537,7 +537,7 @@ namespace blackhc {
 			for( int f = 0 ; f < numFaces ; f++ ) {
 				const Storm3D_Face &face = faces[f];
 
-				for( int i = 0 ; i < 3 ; i++ ) { 
+				for( int i = 0 ; i < 3 ; i++ ) {
 					scene.indices.push_back( firstVertex + face.vertex_index[i] );
 				}
 			}
@@ -593,7 +593,7 @@ namespace blackhc {
 				setFloat3FromVC3( model.bounding.box.max, stormBoundingBox.mmax );
 #else
 				model.bounding.box.min[0] = model.bounding.box.min[1] = model.bounding.box.min[2] = FLT_MAX;
-				model.bounding.box.max[0] = model.bounding.box.max[1] = model.bounding.box.max[2] = -FLT_MAX; 
+				model.bounding.box.max[0] = model.bounding.box.max[1] = model.bounding.box.max[2] = -FLT_MAX;
 				for( int v = 0 ; v < model.numSubObjects ; v++ ) {
 					const auto &subObject = scene.subObjects[ model.startSubObject + v ];
 
@@ -645,13 +645,13 @@ namespace blackhc {
 			//exportModel( object, stormModel );
 
 			MAT &transformation = stormModel.GetMX();
-			memcpy( object.transformation, (float*) &transformation, sizeof object.transformation ); 
+			memcpy( object.transformation, (float*) &transformation, sizeof object.transformation );
 		}
 
 		void exportPrototype( IStorm3D_Model &stormModel ) {
 			scene.models.push_back( SGSScene::Model() );
 			SGSScene::Model &model = scene.models.back();
-			
+
 			exportModel( model, stormModel );
 		}
 
