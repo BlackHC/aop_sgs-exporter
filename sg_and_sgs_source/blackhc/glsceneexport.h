@@ -42,8 +42,6 @@ namespace blackhc {
 		SGSScene scene;
 		std::map< std::string, int > textureNameIdMap;
 		std::map< std::string, int > modelNameObjectIdMap;
-		// in modelName order
-		std::vector< IStorm3D_Model * > prototypeModels;
 
 		// terrain texture index -> my texture id
 		std::vector< int > terrainTextureIds;
@@ -56,7 +54,7 @@ namespace blackhc {
 			scene.indices.reserve( initalTotalSize );
 		}
 
-		void visitObjectInstance( IStorm3D_Model &model ) {
+		void visitObjectInstance( bool terrainBuilding, IStorm3D_Model &model ) {
 			exportObject( model );
 		}
 
@@ -64,7 +62,7 @@ namespace blackhc {
 			exportTerrainHeightmap( map, mapSize, realSize );
 		}
 
-		void visitObjectModel( const std::string &name, IStorm3D_Model &model ) {
+		void visitObjectModel( bool terrainBuilding, const std::string &name, IStorm3D_Model &model ) {
 			exportModelType( name, model );
 		}
 
@@ -351,16 +349,24 @@ namespace blackhc {
 			return SGSScene::NO_TEXTURE;
 		}
 
-		void exportModelType( const std::string &name, IStorm3D_Model &model ) {
+		void exportModelType( const std::string &name, IStorm3D_Model &stormModel ) {
 			auto it = modelNameObjectIdMap.find( name );
 			if( it != modelNameObjectIdMap.end() ) {
 				currentModelId = it->second;
 			}
-			else {
+			else if( checkModel( stormModel ) ) {
+				// add a new model
 				currentModelId = scene.modelNames.size();
 
+				scene.models.push_back( SGSScene::Model() );
+				SGSScene::Model &model = scene.models.back();
+
+				exportModel( model, stormModel );
+
 				scene.modelNames.push_back( name );
-				prototypeModels.push_back( &model );
+			}
+			else {
+				currentModelId = -1;
 			}
 		}
 
@@ -543,6 +549,44 @@ namespace blackhc {
 			}
 		}
 
+		bool checkModel( IStorm3D_Model &stormModel ) {
+			int numSubObjects = 0;
+
+			Iterator<IStorm3D_Model_Object *> *objectIterator;
+			for(objectIterator = stormModel.ITObject->Begin(); !objectIterator->IsEnd(); objectIterator->Next() ) {
+				IStorm3D_Model_Object &stormModelObject = *objectIterator->GetCurrent();
+
+				// ignore editor only objects
+				std::string name = stormModelObject.GetName();
+				if( name.find( "EditorOnly" ) != name.npos ) {
+					continue;
+				}
+				if (stormModelObject.GetName() != NULL)
+				{
+					int slen = strlen(stormModelObject.GetName());
+					if (slen >= 9)
+					{
+						if (strcmp(&stormModelObject.GetName()[slen - 9], "Collision") == 0)
+						{
+							continue;
+						}
+					}
+					if (strcmp(stormModelObject.GetName(), "effect_layer") == 0)
+					{
+						continue;
+					}
+					if (strcmp(stormModelObject.GetName(), "effect_2nd_layer") == 0)
+					{
+						continue;
+					}
+				}
+
+				++numSubObjects;
+			}
+
+			return numSubObjects > 0;
+		}
+
 		// exports storModel into model without pushing it into either scene.models or scene.objects
 		void exportModel( SGSScene::Model &model, IStorm3D_Model &stormModel ) {
 			Iterator<IStorm3D_Model_Object *> *objectIterator;
@@ -638,33 +682,21 @@ namespace blackhc {
 		}
 
 		void exportObject( IStorm3D_Model &stormModel ) {
+			// we only export a model if its model id is valid
+			if( currentModelId == -1 ) {
+				return;
+			}
+
 			scene.objects.push_back( SGSScene::Object() );
 			SGSScene::Object &object = scene.objects.back();
 
 			object.modelId = currentModelId;
-			//exportModel( object, stormModel );
 
 			MAT &transformation = stormModel.GetMX();
 			memcpy( object.transformation, (float*) &transformation, sizeof object.transformation );
 		}
 
-		void exportPrototype( IStorm3D_Model &stormModel ) {
-			scene.models.push_back( SGSScene::Model() );
-			SGSScene::Model &model = scene.models.back();
-
-			exportModel( model, stormModel );
-		}
-
-		void exportPrototypes() {
-			for( int index = 0 ; index < prototypeModels.size() ; index++ ) {
-				exportPrototype( *prototypeModels[ index ] );
-			}
-		}
-
 		void save() {
-			// we're done with the whole scene, now export all prototype objects
-			exportPrototypes();
-
 			// now we're done with everything and can save the scene
 			Serializer::BinaryWriter writer( filepath.c_str() );
 

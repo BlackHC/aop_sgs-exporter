@@ -485,7 +485,7 @@ namespace {
 
 				of.hwndOwner = nullptr;
 				of.lStructSize = sizeof( OPENFILENAME );
-				of.lpstrFilter = "GLscene\0" "*.glscene\0" "\0" "obj files\0" "*.obj\0";
+				of.lpstrFilter = "SgsScene\0" "*.sgsScene\0" "\0" "obj files\0" "*.obj\0";
 				of.lpstrCustomFilter = nullptr;
 				of.nFilterIndex = 0;
 
@@ -500,7 +500,7 @@ namespace {
 				}
 			}
 
-			if( boost::algorithm::ends_with( filename, ".glscene" ) ) {
+			if( boost::algorithm::ends_with( filename, ".sgsScene" ) ) {
 				blackhc::GLSceneExporter exporter( filename );
 
 				sharedData.editorState.visitGameObjects( exporter );

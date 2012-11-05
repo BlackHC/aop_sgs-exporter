@@ -6,9 +6,9 @@ class IStorm3D_Texture;
 
 struct Visitor {
 	// instance model
-	virtual void visitObjectInstance( IStorm3D_Model &model ) {}
+	virtual void visitObjectInstance( bool terrainBuilding, IStorm3D_Model &model ) {}
 	// base model
-	virtual void visitObjectModel( const std::string &name, IStorm3D_Model &model ) {}
+	virtual void visitObjectModel( bool terrainBuilding, const std::string &name, IStorm3D_Model &model ) {}
 
 	virtual void visitColormap( const std::vector<unsigned char> &rgbData, VC2I size ) {}
 

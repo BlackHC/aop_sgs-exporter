@@ -1812,13 +1812,13 @@ void TerrainObjects::visitGameObjects( Visitor & visitor )
 		}
 
 		visitor.visitTerrainObjectName( it->first );
-		visitor.visitObjectModel( it->first, *tm.model );
+		visitor.visitObjectModel( false, it->first, *tm.model );
 
 		for( int i = 0 ; i < tm.objects.size() ; i++ ) {
 			const Object &object = tm.objects[i];
 
 			IStorm3D_Model *model = data->storm.terrain->getInstanceModel( tm.terrainId, object.id );
-			visitor.visitObjectInstance( *model );
+			visitor.visitObjectInstance( false, *model );
 		}
 	}
 }

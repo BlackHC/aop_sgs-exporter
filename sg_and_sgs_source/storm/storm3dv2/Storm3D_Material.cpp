@@ -1050,7 +1050,7 @@ bool Storm3D_Material::Apply(Storm3D_Scene *scene,int pass,DWORD fvf,D3DMATRIX *
 			Storm3D2->D3DDevice->SetTextureStageState(0,D3DTSS_ALPHAARG1,D3DTA_DIFFUSE);
 			Storm3D2->D3DDevice->SetTextureStageState(0,D3DTSS_ALPHAOP,D3DTOP_SELECTARG1);
 			Storm3D2->D3DDevice->SetRenderState(D3DRS_SRCBLEND,D3DBLEND_SRCALPHA);
-			Storm3D2->D3DDevice->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_INVSRCALPHA);				
+			Storm3D2->D3DDevice->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_INVSRCALPHA);
 		}
 		else
 		{

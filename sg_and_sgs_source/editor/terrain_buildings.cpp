@@ -801,13 +801,13 @@ void TerrainBuildings::visitGameObjects( Visitor & visitor )
 			continue;
 		}
 
-		visitor.visitObjectModel( it->first, *terrainBuilding.model );
+		visitor.visitObjectModel( true, it->first, *terrainBuilding.model );
 		
 		for(unsigned int i = 0; i < terrainBuilding.instances.size(); ++i)
 		{
 			BuildingInstance &instance = terrainBuilding.instances[i];
 			
-			visitor.visitObjectInstance( *instance.model );
+			visitor.visitObjectInstance( true, *instance.model );
 			// don't add the floor model. it only contains the floor part of a building
 			// this is used so you can walk into buildings and fades to that model
 		}

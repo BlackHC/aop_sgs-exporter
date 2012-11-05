@@ -64,7 +64,7 @@ struct SGSScene {
 			AT_ADDITIVE, // additive
 			AT_MULTIPLY,
 			AT_MULTIPLY_2,
-			AT_ALPHATEST // like AT_TEXTURE
+			AT_ALPHATEST // like AT_TEXTURE but with z writes
 		};
 
 		AlphaType alphaType;
@@ -161,6 +161,8 @@ struct SGSScene {
 		//std::vector< unsigned int > blockLayerMask;
 
 		SERIALIZER_DEFAULT_IMPL( (mapSize)(layerSize)(vertices)(indices)(layers)(tiles) );
+
+		Terrain() : mapSize(), layerSize() {}
 	};
 
 	// scene data first, then prototype object data

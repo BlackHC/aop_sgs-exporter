@@ -77,7 +77,7 @@ namespace blackhc {
 
 			ExporterVisitor( ObjExporter &_ ) : _(_) {}
 
-			void visitObjectInstance( IStorm3D_Model &model ) {
+			void visitObjectInstance( bool terrainBuilding, IStorm3D_Model &model ) {
 				_.exportModel( model );
 			}
 
